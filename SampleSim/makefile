@@ -6,7 +6,7 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 EXEC = RunSampleSim
-CC = g++
+CC = gcc
 CFLAGS = -c -Wall
 DIR := $(shell ls -F | grep "\/" )
 NAME := $(patsubst %/, %, $(DIR) )
@@ -18,7 +18,7 @@ $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) -o $@
 
 %.o : %/%.c %/%.h 
-	$(CC) $(CFLAGS) %/%.cpp $<
+	$(CC) $(CFLAGS) %/%.c $<
 
 clean :
 	rm $(OBJ) $(EXEC)

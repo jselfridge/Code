@@ -2,21 +2,23 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  SampleSim Program
 //  Justin M Selfridge
-//  SampleRKF.h
-//  Main header file for the RKF sample code
+//  SampleSim.h
+//  Main header file for the sample simulation code
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#ifndef _SAMPLERKF_H
-#define _SAMPLERKF_H
+#ifndef _SAMPLESIM_H
+#define _SAMPLESIM_H
 
 // Custom header declarations
-//#include "../RKF/RKF.h"
+#include "../RKF/RKF.h"
 
 // Standard include files
-#include <iostream>
-using namespace std; 
+//#include <iostream>
+#include <stdio.h>
+//using namespace std; 
 
 // Function prototypes
-//void FuncMain();
+float f(float t, float x) ;
+void DemoRFK();
 
 #endif
 
