@@ -1,6 +1,6 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  Runge-Kutta-Fehlberg ODE Solver
+//  SampleSim Program
 //  Justin M Selfridge
 //  SampleRKF.h
 //  Main header file for the RKF sample code
@@ -12,7 +12,7 @@
 //#include "../RKF/RKF.h"
 
 // Standard include files
-//#include <iostream>
+#include <iostream>
 using namespace std; 
 
 // Function prototypes

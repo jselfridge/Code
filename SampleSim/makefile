@@ -1,12 +1,12 @@
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##  Runge-Kutta-Fehlberg ODE Solver
+##  SampleSim Program
 ##  Justin M Selfridge
 ##  makefile
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-EXEC = RunRKF
-CC = gcc
+EXEC = RunSampleSim
+CC = g++
 CFLAGS = -c -Wall
 DIR := $(shell ls -F | grep "\/" )
 NAME := $(patsubst %/, %, $(DIR) )

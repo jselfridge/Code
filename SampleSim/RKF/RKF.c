@@ -1,6 +1,6 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  Runge-Kutta-Fehlberg ODE Solver
+//  SampleSim Program
 //  Justin M Selfridge
 //  RKF.c
 //  SOurce code to run the RKF ODE solver.
