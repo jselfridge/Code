@@ -10,6 +10,7 @@
 
 // Custom header declarations
 #include "../RKF/RKF.h"
+#include "../LinSys/LinSys.h"
 
 // Standard include files
 //#include <iostream>

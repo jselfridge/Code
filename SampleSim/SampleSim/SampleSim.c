@@ -11,9 +11,12 @@
 int main() {
 
   printf("\nHello Sample Simulation Demo!\n");
-  
+  /*
   printf("Demonstrating the RKF solver!\n");
   DemoRFK();
+  */
+  printf("Demonstrating Linear Systems functions \n");
+  LinSysTest();
 
   printf("\nProgram complete\n\n");
 
