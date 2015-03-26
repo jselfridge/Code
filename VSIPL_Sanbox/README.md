@@ -1,9 +1,10 @@
-ODE_Sandbox
-===========
+VSIPL_Sandbox
+=============
 
-This set of code serves as a snadbox for developing an Ordinary
-Differential Equation (ODE) routine to numerically solve an 
-Initial Value Problem (IVP).  This capability will be incorporated 
+This set of code serves as a snadbox for implementing the 
+Vector Signal and Image Processing Library (VSIPL) which 
+allows for linear algebra functionality within the C 
+programming language.  This capability will be incorporated 
 into "SampleSim" which is the sandbox program for developing 
 Matlab-like capabilities within a C language.
 

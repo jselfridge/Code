@@ -1,22 +1,21 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ODE Demonstration Program
+//  VSIPL Demonstration Program
 //  Justin M Selfridge
 //  Main.h
-//  Main header file for the ODE code
+//  Main header file for the VSIPL code
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef _MAIN_H
 #define _MAIN_H
 
 // Custom header declarations
-#include "../ODE/ODE.h"
+#include "../VSIPL/VSIPL.h"
 
 // Standard include files
 #include <stdio.h>
 
 // Function prototypes
-float f(float t, float x) ;
-void ODE_Demo();
+void VSIPL_Demo();
 
 #endif
 

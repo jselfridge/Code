@@ -1,11 +1,11 @@
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##  ODE Demonstration Program
+##  VSIPL Demonstration Program
 ##  Justin M Selfridge
 ##  makefile
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-EXEC = Demo_ODE
+EXEC = Demo_VSIPL
 CC = gcc
 CFLAGS = -c -Wall
 DIR := $(shell ls -F | grep "\/" )

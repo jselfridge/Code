@@ -1,19 +1,19 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ODE Demonstration Project
+//  VSIPL Demonstration Project
 //  Justin M Selfridge
 //  Main.c
-//  Main source code to run the ODE demo
+//  Main source code to run the VSIPL demo
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Main.h"
 
 // Main program loop
 int main() {
 
-  printf("\nHello ODE Demo! \n");
+  printf("\nHello VSIPL Demo! \n");
 
-  printf("Initializing the ODE solver! \n");
-  ODE_Demo();
+  printf("Running the VSIPL functionality! \n");
+  VSIPL_Demo();
 
   printf("Program complete\n\n");
 
@@ -21,24 +21,9 @@ int main() {
 
 }
 
-float f(float t, float x) {
-  return (2 + (x - t - 1) * (x - t - 1));
-}
+void VSIPL_Demo() {
 
-void ODE_Demo() {
-
-  const float a = 1.0, b = 1.5625;
-  float x = 2.0, t, h, e;
-  const int n = 72;
-  int i;
-
-  h = (b - a) / (float) n;
-  t = a;
-
-  for (i = 1; i <= n;  i++) {
-    ODE(f, &t, &x, h, &e);
-    printf("t = %f, x = %f, e = %f\n" , t, x, e);
-  }
+  printf("Add screen output here... \n");
 
 }
 
