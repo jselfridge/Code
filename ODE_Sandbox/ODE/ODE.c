@@ -1,13 +1,13 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  SampleSim Program
+//  ODE Demonstration Program
 //  Justin M Selfridge
-//  RKF.c
-//  Source code to run the RKF ODE solver.
+//  ODE.c
+//  Source code to run the ODE solver.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "RKF.h"
+#include "ODE.h"
 
-void RKF(float f(float, float), float* t, float* x, float h, float* epsilon) {
+void ODE( float f(float, float), float* t, float* x, float h, float* epsilon ) {
 
   float c20 = 0.25, c21 = 0.25;
   float c30 = 0.375, c31 = 0.09375, c32 = 0.28125;

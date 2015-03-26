@@ -1,11 +1,11 @@
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##  SampleSim Program
+##  ODE Demonstration Program
 ##  Justin M Selfridge
 ##  makefile
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-EXEC = RunSampleSim
+EXEC = Demo_ODE
 CC = gcc
 CFLAGS = -c -Wall
 DIR := $(shell ls -F | grep "\/" )

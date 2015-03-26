@@ -1,21 +1,19 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  SampleSim Program
+//  ODE Demonstration Program
 //  Justin M Selfridge
-//  RKF.h
-//  Header file for the RKF ODE solver.
+//  ODE.h
+//  Header file for the ODE solver.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#ifndef _RKF_H
-#define _RKF_H
+#ifndef _ODE_H
+#define _ODE_H
 
 // Standand include files
-//#include <iostream>
 #include <stdio.h>
 #include <math.h>
-//using namespace std;
 
 // Function prototypes
-void RKF(float f(float, float), float* t, float* x, float h, float* epsilon);
+void ODE( float f(float, float), float* t, float* x, float h, float* epsilon );
 
 #endif
 
