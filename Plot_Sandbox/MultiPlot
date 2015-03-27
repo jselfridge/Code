@@ -1,0 +1,71 @@
+
+# Set up the plotting script
+set terminal \
+png nocrop enhanced \
+size 1400,1000 \
+font "/Library/Fonts/Times New Roman.ttf,10"
+set output 'MultiPlot.png'
+
+# Begin plotting
+set multiplot \
+layout 3,2 \
+rowsfirst \
+margins 0.10, 0.93, 0.10, 0.93 \
+spacing 0.10
+
+# Common settings
+set xlabel "Time [sec]"      font "/Library/Fonts/Times New Roman.ttf, 16"
+set ytics border nomirror    font "/Library/Fonts/Times New Roman.ttf, 12"
+set xtics border nomirror    font "/Library/Fonts/Times New Roman.ttf, 12"
+set format y "%-2.1f"
+#set mytics 2
+#set mxtics 2
+set key off
+
+# Subfigure (R1,C1)
+set ylabel "Label_{11} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot sin(x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R1,C2)
+set ylabel "Label_{12} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot cos(x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R2,C1)
+set ylabel "Label_{21} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot sin(2*x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R2,C2)
+set ylabel "Label_{22} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot cos(2*x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R3,C1)
+set ylabel "Label_{31} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot -sin(x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R3,C2)
+set ylabel "Label_{32} [X]" \
+font "/Library/Fonts/Times New Roman.ttf, 16"
+plot -cos(x) \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Exit plotting
+unset multiplot
+
+
+
