@@ -1,11 +1,11 @@
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##  VSIPL Demonstration Program
+##  Linear Algebra Demonstration Program
 ##  Justin M Selfridge
 ##  makefile
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-EXEC = Demo_VSIPL
+EXEC = Demo_LinAlg
 CC = gcc
 CFLAGS = -c -Wall
 DIR := $(shell ls -F | grep "\/" )
