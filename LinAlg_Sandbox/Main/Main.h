@@ -10,6 +10,9 @@
 
 // Custom header declarations
 //#include "../VSIPL/VSIPL.h"
+//#include </usr/include/blaswrap.h>
+//#include </usr/include/f2c.h>
+//#include </usr/include/clapack.h>
 
 // Standard include files
 #include <stdio.h>

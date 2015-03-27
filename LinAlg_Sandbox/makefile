@@ -15,7 +15,8 @@ OBJ := $(foreach o, $(NAME), $(o)/$(o).o )
 all : $(EXEC)
 
 $(EXEC) : $(OBJ)
-	$(CC) $(OBJ) -o $@
+	$(CC) $(OBJ) \
+	 -o $@
 
 %.o : %/%.c %/%.h 
 	$(CC) $(CFLAGS) %/%.c $<
