@@ -1,11 +1,9 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  Matrix.c
+//  Temp.c - Matlib Library Development 
 //  Justin M Selfridge
-//  Library for performing basic matrix and vector 
-//  manipulations.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "Matrix.h"
+#include "Temp.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,56 +11,60 @@
 
 
 
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatIO (matrix input and output)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_err
-//  Test an error condition, and if true prints a warning
-//  and exits the program.
+//  If error condition is true, prints a warning and exits.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void mat_err ( int cond, char* msg )  {
+void mat_err ( int cond, char* msg ) {
   if (cond) {
-    fprintf( stderr, "%s\n", msg );
+    fprintf( stderr, "%s\n\n", msg );
     exit(1);
   }
 }
 
 
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_create
-//  Creates a new matrix with the specified dimensions, and
+//  mat_init
+//  Initializes a new matrix with the specified dimensions, and
 //  sets the elements to values of zero.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_create( int width, int height ) {
+matrix* mat_init ( int rows, int cols ) {
 
   matrix* out;
-  mat_err( ( width<1 || height<1 ), "Error (mat_create): matrix dimensions must be positive" ); 
+  mat_err( ( rows<1 || cols<1 ), "Error (mat_init): matrix dimensions must be positive" ); 
 
   out = (matrix*) malloc( sizeof(matrix) );
-  mat_err( out == NULL, "Error (mat_create): out of memory" );
+  mat_err( out == NULL, "Error (mat_init): matrix returned NULL" );
 
-  out->width = width;
-  out->height = height;
-  out->data = (double*) malloc( sizeof(double) * width * height );
+  out->rows = rows;
+  out->cols = cols;
+  out->data = (double*) malloc( sizeof(double) * rows * cols );
 
-  mat_err( out->data == NULL, "Error (mat_create): out of memory" );
-  memset( out->data, 0.0, width * height * sizeof(double) );
+  mat_err( out->data == NULL, "Error (mat_init): matrix data returned NULL" );
+  memset( out->data, 0.0, rows * cols * sizeof(double) );
 
   return out;
 }
-
-
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_read
 //  Reads a matrix from a file.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_read ( char* file )  {
+matrix* mat_read ( char* file ) {
 
   FILE*    f;
   int      i, elem;
-  int      width, height;
+  int      rows, cols;
   int      scan;
   float    val;
   matrix*  out;
@@ -73,67 +75,41 @@ matrix* mat_read ( char* file )  {
     exit(1);
   }
 
-  scan = fscanf( f, "%d", &width );
-  mat_err( scan==EOF, "Error (mat_read): failed to read from file \n" );
+  scan = fscanf( f, "%d", &rows );
+  mat_err( scan==EOF, "Error (mat_read): failed to read 'rows' from file" );
 
-  scan = fscanf( f, "%d", &height );
-  mat_err( scan==EOF, "Error (mat_read): failed to read from file \n" );
+  scan = fscanf( f, "%d", &cols );
+  mat_err( scan==EOF, "Error (mat_read): failed to read 'col' from file" );
 
-  out = mat_create( width, height );
-  elem = width * height; 
+  out = mat_init( rows, cols );
+  elem = rows * cols; 
   outdata = out->data;
 
   for ( i=0; i<elem; i++ ) {
     scan = fscanf( f, "%f", &val );
-    mat_err( scan==EOF, "Error (mat_read): matrix is missing elements \n" );
+    mat_err( scan==EOF, "Error (mat_read): matrix is missing elements" );
     *(outdata++) = val;
   }
+
+  scan = fscanf( f, "%f", &val );
+  mat_err( scan!=EOF, "Error (mat_read): matrix has extra elements" );
 
   fclose(f);
   return out;
 }
-   
-
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_copy
-//  Copies a matrix into a new matrix.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_copy ( matrix* mat )  {
-  return mat_scale( mat, 1 );
-}
-
-
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_set
-//  Assigns a value into a matrix element
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_get
-//  Returns a value from a matrix element
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_print
 //  Display a matrix in the terminal.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void mat_print( matrix* mat )  {
+void mat_print( matrix* mat ) {
 
-  int i, j;
   double* matdata = mat->data;
-  printf( "[%dx%d]\n", mat->width, mat->height );
+  printf( "[%dx%d]\n", mat->rows, mat->cols );
 
-  for ( i=0; i< mat->height; i++ ) {
-    for ( j=0; j< mat->width; j++ ) {
+  for ( int i=0; i< mat->rows; i++ ) {
+    for ( int j=0; j< mat->cols; j++ ) {
       printf( " %9.6f", *(matdata++) );
     }
     printf("\n");
@@ -143,16 +119,13 @@ void mat_print( matrix* mat )  {
 }
 
 
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_write
 //  Writes a matrix to a file.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void mat_write ( matrix* mat, char* file )  {
+void mat_write ( matrix* mat, char* file ) {
 
   FILE* f;
-  int i, j;
   double* matdata = mat->data;
 
   if ( ( f= fopen( file, "w" ) ) == NULL ) {
@@ -160,10 +133,10 @@ void mat_write ( matrix* mat, char* file )  {
     exit(1);
   }
 
-  fprintf( f, "%d %d\n", mat->width, mat->height );
+  fprintf( f, "%d %d\n", mat->rows, mat->cols );
 
-  for ( i=0; i< mat->height; i++ ) {
-    for ( j=0; j< mat->width; j++ ) {
+  for ( int i=0; i< mat->rows; i++ ) {
+    for ( int j=0; j< mat->cols; j++ ) {
       fprintf( f, " %2.5f", *(matdata++) );
     }
     fprintf( f, "\n" );
@@ -174,13 +147,11 @@ void mat_write ( matrix* mat, char* file )  {
 }
 
 
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_clear
 //  Destroys an existing matrix and frees the memory.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void mat_clear( matrix* mat )  {
+void mat_clear( matrix* mat ) {
 
   if ( mat != NULL ) {
     if ( mat->data != NULL ) {
@@ -197,22 +168,79 @@ void mat_clear( matrix* mat )  {
 
 
 
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatManip (matrix manipulation)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_set
+//  Assigns a value into a matrix element
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_set ( matrix* mat, int row, int col, double val ) {
+
+  double* matdata;
+  int     offset;
+
+  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_set): index exceeds matrix dimensions" );
+
+  matdata = mat->data;
+  offset = (row-1) * (mat->rows) + (col-1);
+  matdata += offset;
+  *matdata = val;
+
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_get
+//  Returns the value of a matrix element.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_get ( matrix* mat, int row, int col ) {
+
+  double* matdata;
+  int     offset;
+  double  val;
+
+  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_get): index exceeds matrix dimensions" );
+
+  matdata = mat->data;
+  offset = (row-1) * (mat->rows) + (col-1);
+  matdata += offset;
+  val = *matdata;
+
+  return val;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_copy
+//  Copies a matrix into a new matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_copy ( matrix* mat ) {
+  return mat_scale( mat, 1.0 );
+}
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_eye
 //  Creates an identity matrix of size n.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_eye ( int n )  {
+matrix* mat_eye ( int n ) {
 
-  int i;
   matrix* out;
   double* outdata;
 
   mat_err( n<1, "Error (mat_eye): identity matrix dimension must be positive." );
 
-  out = mat_create( n, n );
+  out = mat_init( n, n );
   outdata = out->data;
 
-  for ( i=0; i<n; i++ ) {
+  for ( int i=0; i<n; i++ ) {
     *outdata = 1.0;
     outdata += n+1;
   }
@@ -221,23 +249,42 @@ matrix* mat_eye ( int n )  {
 }
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_ones
+//  Creates a new nxm  matrix filled with values of one.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_ones ( int rows, int cols ) {
+
+  matrix* out;
+  double* outdata;
+  int elem = rows * cols;
+
+  mat_err(  rows<1 || cols<1, "Error (mat_ones): identity matrix dimension must be positive." );
+
+  out = mat_init( rows, cols );
+  outdata = out->data;
+
+  for ( int i=0; i<elem; i++ ) {
+    *outdata = 1.0;
+    outdata++;
+  }
+
+  return out;
+}
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_scale
 //  Multiplies a matrix by a scalar with type double.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_scale ( matrix* mat, double scale )  {
+matrix* mat_scale ( matrix* mat, double scale ) {
 
-  int i;
-  int elem = mat->width * mat->height;
+  int      elem     = mat->rows * mat->cols;
+  matrix*  out      = mat_init( mat->rows, mat->cols );
+  double*  matdata  = mat->data;
+  double*  outdata  = out->data;
 
-  matrix* out = mat_create( mat->width, mat->height );
-
-  double* matdata = mat->data;
-  double* outdata = out->data;
-
-  for ( i=0; i<elem; i++ ) {
+  for ( int i=0; i<elem; i++ ) {
     *(outdata++) = *(matdata++) * scale;
   }
 
@@ -247,6 +294,44 @@ matrix* mat_scale ( matrix* mat, double scale )  {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatProp (matrix properties)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatArith (matrix arithmetic)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatOver (matrix overloaded operators)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+/*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_trans
 //  Returns the transpose of a rectangular matrix or an array.
@@ -269,15 +354,12 @@ matrix* mat_trans ( matrix* mat )  {
 
   return out;
 }
+*/
 
 
 
 
-
-
-
-
-
+/*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_trace
 //  Returns the scalar trace of a rectangular matrix, which 
@@ -299,7 +381,7 @@ double mat_trace ( matrix* mat )  {
 
   return sum;
 }
-
+*/
 
 
 
@@ -310,6 +392,8 @@ double mat_trace ( matrix* mat )  {
 
 
 
+
+/*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_meanc
 //  Returns a row vector with the average values from the 
@@ -336,10 +420,10 @@ matrix* mat_meanc ( matrix* mat ) {
 
   return out;
 }
+*/
 
 
-
-
+/*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_mul
 //  Performs matrix multiplication.
@@ -375,7 +459,7 @@ matrix* mat_mul ( matrix* matA, matrix* matB )  {
 
   return out;
 }
-
+*/
 
 
 
