@@ -1,204 +1,255 @@
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  Matrix.c
 //  Justin M Selfridge
 //  Library for performing basic matrix and vector 
 //  manipulations.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*===========================================================================
- * assert
- * If the assertion is non-zero (i.e. true), then it returns.
- * If the assertion is zero (i.e. false), then it display the string and
- * aborts the program.
- * This is ment to act like Python's assert keyword.
- *=========================================================================*/
-/*~~~
-void assert(int assertion, char* message) {
-    if (assertion == 0) {
-        fprintf(stderr, "%s\n", message);
-        exit(1);
-    }
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_err
+//  Test an error condition, and if true prints a warning
+//  and exits the program.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_err ( int cond, char* msg )  {
+  if (cond) {
+    fprintf( stderr, "%s\n", msg );
+    exit(1);
+  }
 }
-~~~*/
 
 
-/*===========================================================================
- * readMatrix
- * Reads a file containing a Matrix
- *=========================================================================*/
-/*~~~
-matrix* readMatrix(char* filename) {
-    FILE* fh;
-    matrix* data;
-    float myValue;
-    int width, height, i, elements;
-    int scan_test;
-    double *ptr;
 
-    if ((fh = fopen(filename, "r")) == NULL) {
-        fprintf(stderr, "Error: Cannot open %s\n", filename);
-        exit(1);
-    }
 
-    scan_test = fscanf(fh, "%d", &width);
-    assert(scan_test != EOF, "Failed to read from file.");
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_create
+//  Creates a new matrix with the specified dimensions, and
+//  sets the elements to values of zero.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_create( int width, int height ) {
 
-    scan_test = fscanf(fh, "%d", &height);
-    assert(scan_test != EOF, "Failed to read from file.");
+  matrix* out;
+  mat_err( ( width<1 || height<1 ), "Matrix dimensions must be positive" ); 
 
-    data = makeMatrix(width, height);
-    elements = width * height;
+  out = (matrix*) malloc( sizeof(matrix) );
+  mat_err( out == NULL, "Out of memory" );
 
-    ptr = data->data;
-    for (i = 0; i < elements; i++) {
-        scan_test = fscanf(fh, "%f", &myValue);
-        assert(scan_test != EOF, "Failed to read from file. File is incomplete.");
-        *(ptr++) = myValue;
-    }
+  out->width = width;
+  out->height = height;
+  out->data = (double*) malloc( sizeof(double) * width * height );
 
-    fclose(fh);
-    return data;
+  mat_err( out->data == NULL, "Out of memory");
+  memset( out->data, 0.0, width * height * sizeof(double) );
+
+  return out;
 }
-~~~*/
 
 
-/*===========================================================================
- * makeMatrix
- * Makes a matrix with a width and height parameters.
- *=========================================================================*/
-/*~~~
-matrix* makeMatrix(int width, int height) {
-    matrix* out;
-    assert(width > 0 && height > 0, "New matrix must be at least a 1 by 1");
-    out = (matrix*) malloc(sizeof(matrix));
 
-    assert(out != NULL, "Out of memory.");
 
-    out->width = width;
-    out->height = height;
-    out->data = (double*) malloc(sizeof(double) * width * height);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_read
+//  Reads a matrix from a file.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_read ( char* file )  {
 
-    assert(out->data != NULL, "Out of memory.");
+  FILE*    f;
+  int      i, elem;
+  int      width, height;
+  int      scan;
+  float    val;
+  matrix*  out;
+  double*  outdata;
 
-    memset(out->data, 0.0, width * height * sizeof(double));
+  if ( ( f= fopen( file, "r" ) ) == NULL ) {
+    fprintf( stderr, "Error: Cannot open %s \n", file );
+    exit(1);
+  }
 
-    return out;
+  scan = fscanf( f, "%d", &width );
+  mat_err( scan==EOF, "Failed to read from file \n" );
+
+  scan = fscanf( f, "%d", &height );
+  mat_err( scan==EOF, "Failed to read from file \n" );
+
+  out = mat_create( width, height );
+  elem = width * height; 
+  outdata = out->data;
+
+  for ( i=0; i<elem; i++ ) {
+    scan = fscanf( f, "%f", &val );
+    mat_err( scan==EOF, "Matrix is missing elements \n" );
+    *(outdata++) = val;
+  }
+
+  fclose(f);
+  return out;
 }
-~~~*/
+   
 
 
-/*===========================================================================
- * copyMatrix
- * Copies a matrix. This function uses scaleMatrix, because scaling matrix
- * by 1 is the same as a copy.
- *=========================================================================*/
-/*~~~
-matrix* copyMatrix(matrix* m) {
-    return scaleMatrix(m, 1);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_copy
+//  Copies a matrix into a new matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_copy ( matrix* mat )  {
+  return mat_scale( mat, 1 );
 }
-~~~*/
 
 
-/*===========================================================================
- * freeMatrix
- * Frees the resources of a matrix
- *=========================================================================*/
-/*~~~
-void freeMatrix(matrix* m) {
-    if (m != NULL) {
-        if (m->data != NULL) {
-            free(m->data);
-            m->data = NULL;
-        }
 
-        free(m);
-        m = NULL;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_print
+//  Display a matrix in the terminal.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_print( matrix* mat )  {
+
+  int i, j;
+  double* matdata = mat->data;
+  printf( "[%dx%d]\n", mat->width, mat->height );
+
+  for ( i=0; i< mat->height; i++ ) {
+    for ( j=0; j< mat->width; j++ ) {
+      printf( " %9.6f", *(matdata++) );
     }
-    return;
+    printf("\n");
+  }
+
+  return;
 }
-~~~*/
 
 
 
-/*===========================================================================
- * writeMatrix
- * Write a matrix to a file.
- *=========================================================================*/
-/*~~~
-void writeMatrix(matrix* m, char* filename) {
-    FILE* fh;
-    int i, j;
-    double* ptr = m->data;
 
-    if ((fh = fopen(filename, "w")) == NULL) {
-        fprintf(stderr, "Error: Cannot open %s\n", filename);
-        exit(1);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_write
+//  Writes a matrix to a file.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_write ( matrix* mat, char* file )  {
+
+  FILE* f;
+  int i, j;
+  double* matdata = mat->data;
+
+  if ( ( f= fopen( file, "w" ) ) == NULL ) {
+    fprintf( stderr, "Error: Cannot open %s\n", file );
+    exit(1);
+  }
+
+  fprintf( f, "%d %d\n", mat->width, mat->height );
+
+  for ( i=0; i< mat->height; i++ ) {
+    for ( j=0; j< mat->width; j++ ) {
+      fprintf( f, " %2.5f", *(matdata++) );
     }
+    fprintf( f, "\n" );
+  }
 
-    fprintf(fh, "%d %d\n", m->width, m->height);
-
-    for (i = 0; i < m->height; i++) {
-        for (j = 0; j < m->width; j++) {
-            fprintf(fh, " %2.5f", *(ptr++));
-        }
-        fprintf(fh, "\n");
-    }
-
-    close(fh);
-    return;
+  fclose(f);  
+  return;
 }
-~~~*/
 
 
 
-/*===========================================================================
- * printMatrix
- * Prints a matrix. Great for debugging.
- *=========================================================================*/
-/*~~~
-void printMatrix(matrix* m) {
-    int i, j;
-    double* ptr = m->data;
-    printf("%d %d\n", m->width, m->height);
-    for (i = 0; i < m->height; i++) {
-        for (j = 0; j < m->width; j++) {
-            printf(" %9.6f", *(ptr++));
-        }
-        printf("\n");
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_clear
+//  Destroys an existing matrix and frees the memory.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_clear( matrix* mat )  {
+
+  if ( mat != NULL ) {
+    if ( mat->data != NULL ) {
+      free( mat->data );
+      mat->data = NULL;
     }
-    return;
+    free(mat);
+    mat = NULL;
+  }
+
+  return;
 }
-~~~*/
 
 
-/*===========================================================================
- * eyeMatrix
- * Returns an identity matrix of size n by n, where n is the input
- * parameter.
- *=========================================================================*/
-/*~~~
-matrix* eyeMatrix(int n) {
-    int i;
-    matrix *out;
-    double* ptr;
 
-    assert(n > 0, "Identity matrix must have value greater than zero.");
 
-    out = makeMatrix(n, n);
-    ptr = out->data;
-    for (i = 0; i < n; i++) {
-        *ptr = 1.0;
-        ptr += n + 1;
-    }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_eye
+//  Creates an identity matrix of size n.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_eye ( int n )  {
 
-    return out;
+  int i;
+  matrix* out;
+  double* outdata;
+
+  mat_err( n<1, "Identity matrix dimension must be positive." );
+
+  out = mat_create( n, n );
+  outdata = out->data;
+
+  for ( i=0; i<n; i++ ) {
+    *outdata = 1.0;
+    outdata += n+1;
+  }
+
+  return out;
 }
-~~~*/
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_scale
+//  Multiplies a matrix by a scalar with type double.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_scale ( matrix* mat, double scale )  {
+
+  int i;
+  int elem = mat->width * mat->height;
+
+  matrix* out = mat_create( mat->width, mat->height );
+
+  double* matdata = mat->data;
+  double* outdata = out->data;
+
+  for ( i=0; i<elem; i++ ) {
+    *(outdata++) = *(matdata++) * scale;
+  }
+
+  return out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -367,25 +418,6 @@ matrix* multiplyMatrix(matrix* a, matrix* b) {
 ~~~*/
 
 
-/*===========================================================================
- * scaleMatrix
- * Given a matrix and a double value, this returns a new matrix where each
- * element in the input matrix is multiplied by the double value
- *=========================================================================*/
-/*~~~
-matrix* scaleMatrix(matrix* m, double value) {
-    int i, elements = m->width * m->height;
-    matrix* out = makeMatrix(m->width, m->height);
-    double* ptrM = m->data;
-    double* ptrOut = out->data;
-
-    for (i = 0; i < elements; i++) {
-        *(ptrOut++) = *(ptrM++) * value;
-    }
-
-    return out;
-}
-~~~*/
 
 
 /*===========================================================================

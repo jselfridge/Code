@@ -36,44 +36,59 @@
 
 
 
-/*~~~
+// Matrix structure declaration
 typedef struct _matrix {
-    int height;
-    int width;
-    double* data;
+  char name[32];
+  int height;
+  int width;
+  double* data;
 } matrix;
-~~~*/
+
+
+void    mat_err     ( int cond, char* msg );
+matrix* mat_create  ( int width, int height );
+matrix* mat_read    ( char* file );
+matrix* mat_copy    ( matrix* mat );
+void    mat_print   ( matrix* mat );
+void    mat_write   ( matrix* mat, char* file );
+void    mat_clear   ( matrix* mat );
+
+
+matrix* mat_eye     ( int n );
+matrix* mat_scale   ( matrix* mat, double scale );
+
+
+
 
 //============================
 // Stuff I wish C had.
 //============================
-//void    assert(int assertion, char* message);
+//void    assert(int assertion, char* message);          // COMPLETE
 
 //============================
 // Catch and release functions
 //============================
-//matrix* readMatrix(char* filename);
-//matrix* makeMatrix(int width, int height);
-//matrix* copyMatrix(matrix* m);
-//void    freeMatrix(matrix* m);
-//void    writeMatrix(matrix* m, char* filename);
-//void    printMatrix(matrix* m);
+//matrix* readMatrix(char* filename);                    // COMPLETE
+//matrix* makeMatrix(int width, int height);             // COMPLETE
+//matrix* copyMatrix(matrix* m);                         // COMPLETE
+//void    freeMatrix(matrix* m);                         // COMPLETE
+//void    writeMatrix(matrix* m, char* filename);        // COMPLETE
+//void    printMatrix(matrix* m);                        // COMPLETE
 
 //============================
 // Basic Matrix operations
 //============================
-//matrix* eyeMatrix(int n);
+//matrix* eyeMatrix(int n);                              // COMPLETE
 //double  traceMatrix(matrix* m);
 //matrix* transposeMatrix(matrix* m);
 //matrix* meanMatrix(matrix* m);
 //matrix* multiplyMatrix(matrix* a, matrix* b);
-//matrix* scaleMatrix(matrix* m, double value);
+//matrix* scaleMatrix(matrix* m, double value);          // COMPLETE
 //matrix* covarianceMatrix(matrix* m);
 //void    rowSwap(matrix* a, int p, int q); // This method changes the input matrix.
 //matrix* dotProductMatrix(matrix* a, matrix* b);
 //matrix* dotDiagonalMatrix(matrix* a, matrix* b);
 //matrix* L2_distance(matrix* a, matrix* b);
-
 
 #endif
 
