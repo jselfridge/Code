@@ -9,16 +9,13 @@
 #define _MAIN_H
 
 // Custom header declarations
-//#include "../VSIPL/VSIPL.h"
-//#include </usr/include/blaswrap.h>
-//#include </usr/include/f2c.h>
-//#include </usr/include/clapack.h>
+#include "../Matrix/Matrix.h"
 
 // Standard include files
 #include <stdio.h>
 
 // Function prototypes
-void LinAlg_Demo();
+//void LinAlg_Demo();
 
 #endif
 
