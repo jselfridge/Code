@@ -11,33 +11,52 @@
 int main() {
 
   printf("\nHello Linear Algebra Demo! \n");
-
-
-  printf("Identity and zeros \n");
-
   
-  matrix* A = mat_create(3,4);  
-  mat_print(A);
+  double VecA[4] = { 1.0, 2.0, 3.0, 4.0 };
+  printf("\n%f\n%f\n%f\n%f\n", VecA[0], VecA[1], VecA[2], VecA[3]);
 
-  matrix* B = mat_eye(2);
-  mat_print(B);
+  double matA[2][2] = { { 1.0, 2.0 }, { 3.0, 4.0 } };
+  matA = {/0};
+  double matA[2][2] = { { 5.0, 6.0 }, { 7.0, 8.0 } };
 
-  matrix* C = mat_copy(B);
-  mat_print(C);
+  //matrix* A = mat_read("matA");
+  //matrix* B = mat_read("matB");
 
-  matrix* D = mat_scale( C, 5 );
-  mat_print(D);
+  //matrix* C = mat_mul(A,B);
+  //mat_print(C);
+  //mat_clear(C);
 
-  mat_write( D, "testfile" );
+  //matrix* M = mat_create(3,4);  
+  //mat_print(M);
 
-  matrix* E = mat_read("testfile");
-  mat_print(E);
+  //matrix* M = mat_eye(2);
+  //mat_print(M);
 
-  mat_clear(A);
-  mat_clear(B);
-  mat_clear(C);
-  mat_clear(D);
-  mat_clear(E);
+  //matrix* M = mat_copy(M);
+  //mat_print(M);
+
+  //matrix* M = mat_scale( M, 5 );
+  //mat_print(M);
+
+  //mat_write( M, "testfile" );
+
+  //matrix* M = mat_read("testfile");
+  //mat_print(M);
+
+  //double a = mat_trace(M);
+  //printf( "Trace: %f\n", a );
+
+  //matrix* Vt = mat_trans(V);
+  //matrix* Mt = mat_trans(M);
+  //mat_print(Vt);  mat_clear(Vt);
+  //mat_print(Mt);  mat_clear(Mt);
+
+  //matrix* Mc = mat_meanc(M);
+  //mat_print(Mc);
+
+
+
+
 
   // eye(3)
   // zero(2,4)

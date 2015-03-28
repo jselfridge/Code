@@ -45,18 +45,26 @@ typedef struct _matrix {
 } matrix;
 
 
-void    mat_err     ( int cond, char* msg );
-matrix* mat_create  ( int width, int height );
-matrix* mat_read    ( char* file );
-matrix* mat_copy    ( matrix* mat );
-void    mat_print   ( matrix* mat );
-void    mat_write   ( matrix* mat, char* file );
-void    mat_clear   ( matrix* mat );
+void     mat_err     ( int cond, char* msg );
+matrix*  mat_create  ( int width, int height );
+matrix*  mat_read    ( char* file );
+matrix*  mat_copy    ( matrix* mat );
+//void     mat_set    ( matrix* mat );  // WIP
+//void     mat_get    ( matrix* mat );  // WIP
+void     mat_print   ( matrix* mat );
+void     mat_write   ( matrix* mat, char* file );
+void     mat_clear   ( matrix* mat );
 
 
-matrix* mat_eye     ( int n );
-matrix* mat_scale   ( matrix* mat, double scale );
+matrix*  mat_eye     ( int n );
+matrix*  mat_scale   ( matrix* mat, double scale );
+matrix*  mat_trans   ( matrix* mat );                    // Issue with vectors
+double   mat_trace   ( matrix* mat );
 
+//double   mat_mean    ( matrix* mat );  // WIP
+//matrix*  mat_meanr   ( matrix* mat );  // WIP
+matrix*  mat_meanc   ( matrix* mat );  // WIP
+matrix*  mat_mul     ( matrix* matA, matrix* matB );  // WIP
 
 
 
@@ -79,9 +87,9 @@ matrix* mat_scale   ( matrix* mat, double scale );
 // Basic Matrix operations
 //============================
 //matrix* eyeMatrix(int n);                              // COMPLETE
-//double  traceMatrix(matrix* m);
-//matrix* transposeMatrix(matrix* m);
-//matrix* meanMatrix(matrix* m);
+//double  traceMatrix(matrix* m);                        // COMPLETE
+//matrix* transposeMatrix(matrix* m);                    // COMPLETE
+//matrix* meanMatrix(matrix* m);                         
 //matrix* multiplyMatrix(matrix* a, matrix* b);
 //matrix* scaleMatrix(matrix* m, double value);          // COMPLETE
 //matrix* covarianceMatrix(matrix* m);

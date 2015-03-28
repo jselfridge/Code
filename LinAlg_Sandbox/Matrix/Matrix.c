@@ -36,16 +36,16 @@ void mat_err ( int cond, char* msg )  {
 matrix* mat_create( int width, int height ) {
 
   matrix* out;
-  mat_err( ( width<1 || height<1 ), "Matrix dimensions must be positive" ); 
+  mat_err( ( width<1 || height<1 ), "Error (mat_create): matrix dimensions must be positive" ); 
 
   out = (matrix*) malloc( sizeof(matrix) );
-  mat_err( out == NULL, "Out of memory" );
+  mat_err( out == NULL, "Error (mat_create): out of memory" );
 
   out->width = width;
   out->height = height;
   out->data = (double*) malloc( sizeof(double) * width * height );
 
-  mat_err( out->data == NULL, "Out of memory");
+  mat_err( out->data == NULL, "Error (mat_create): out of memory" );
   memset( out->data, 0.0, width * height * sizeof(double) );
 
   return out;
@@ -69,15 +69,15 @@ matrix* mat_read ( char* file )  {
   double*  outdata;
 
   if ( ( f= fopen( file, "r" ) ) == NULL ) {
-    fprintf( stderr, "Error: Cannot open %s \n", file );
+    fprintf( stderr, "Error (mat_read): cannot open %s \n", file );
     exit(1);
   }
 
   scan = fscanf( f, "%d", &width );
-  mat_err( scan==EOF, "Failed to read from file \n" );
+  mat_err( scan==EOF, "Error (mat_read): failed to read from file \n" );
 
   scan = fscanf( f, "%d", &height );
-  mat_err( scan==EOF, "Failed to read from file \n" );
+  mat_err( scan==EOF, "Error (mat_read): failed to read from file \n" );
 
   out = mat_create( width, height );
   elem = width * height; 
@@ -85,7 +85,7 @@ matrix* mat_read ( char* file )  {
 
   for ( i=0; i<elem; i++ ) {
     scan = fscanf( f, "%f", &val );
-    mat_err( scan==EOF, "Matrix is missing elements \n" );
+    mat_err( scan==EOF, "Error (mat_read): matrix is missing elements \n" );
     *(outdata++) = val;
   }
 
@@ -103,6 +103,21 @@ matrix* mat_read ( char* file )  {
 matrix* mat_copy ( matrix* mat )  {
   return mat_scale( mat, 1 );
 }
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_set
+//  Assigns a value into a matrix element
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_get
+//  Returns a value from a matrix element
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -141,7 +156,7 @@ void mat_write ( matrix* mat, char* file )  {
   double* matdata = mat->data;
 
   if ( ( f= fopen( file, "w" ) ) == NULL ) {
-    fprintf( stderr, "Error: Cannot open %s\n", file );
+    fprintf( stderr, "Error (mat_write): cannot open %s\n", file );
     exit(1);
   }
 
@@ -192,7 +207,7 @@ matrix* mat_eye ( int n )  {
   matrix* out;
   double* outdata;
 
-  mat_err( n<1, "Identity matrix dimension must be positive." );
+  mat_err( n<1, "Error (mat_eye): identity matrix dimension must be positive." );
 
   out = mat_create( n, n );
   outdata = out->data;
@@ -232,84 +247,160 @@ matrix* mat_scale ( matrix* mat, double scale )  {
 
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_trans
+//  Returns the transpose of a rectangular matrix or an array.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_trans ( matrix* mat )  {
 
+  int     i, j;
+  matrix* out = mat_create( mat->height, mat->width );
+  double* outdata;
+  double* matdata = mat->data;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*===========================================================================
- * traceMatrix
- * Given an "m rows by n columns" matrix, it returns the sum of the elements
- * along the diagonal. This is know as the matrix 'trace'.
- *=========================================================================*/
-/*~~~
-double traceMatrix(matrix* m) {
-    int i;
-    int size;
-    double* ptr = m->data;
-    double sum = 0.0;
-
-    if (m->height < m->width) {
-        size = m->height;
+  for (i = 0; i < mat->height; i++) {
+    outdata = &out->data[i];
+    for (j = 0; j < mat->width; j++) {
+      *outdata = *matdata;
+      matdata++;
+      outdata += out->width;
     }
-    else {
-        size = m->width;
-    }
+  }
 
-    for (i = 0; i < size; i++) {
-        sum += *ptr;
-        ptr += m->width + 1;
-    }
-
-    return sum;
+  return out;
 }
-~~~*/
 
 
 
-/*===========================================================================
- * meanMatrix
- * Given an "m rows by n columns" matrix, it returns a matrix with 1 row and
- * n columns, where each element represents the mean of that full column.
- *=========================================================================*/
-/*~~~
-matrix* meanMatrix(matrix* m) {
-    int i, j;
-    double* ptr;
-    matrix* out;
 
-    assert(m->height > 0, "Height of matrix cannot be zero.");
 
-    out = makeMatrix(m->width, 1);
 
-    for (i = 0; i < m->width; i++) {
-        out->data[i] = 0.0;
-        ptr = &m->data[i];
-        for (j = 0; j < m->height; j++) {
-            out->data[i] += *ptr;
-            ptr += out->width;
-        }
-        out->data[i] /= (double) m->height;
-    }
-    return out;
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_trace
+//  Returns the scalar trace of a rectangular matrix, which 
+//  is the summation along the main diagonal.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_trace ( matrix* mat )  {
+
+  int      i, size;
+  double*  matdata = mat->data;
+  double   sum = 0.0;
+
+  if ( mat->height < mat->width )  { size = mat->height; }
+  else                             { size = mat->width;  }
+
+  for ( i=0; i<size; i++ ) {
+    sum += *matdata;
+    matdata += mat->width + 1;
+  }
+
+  return sum;
 }
-~~~*/
+
+
+
+
+
+
+//double mat_mean    ( matrix* mat );  // WIP
+//matrix*  mat_meanr   ( matrix* mat );  // WIP
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_meanc
+//  Returns a row vector with the average values from the 
+//  columns of a matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_meanc ( matrix* mat ) {
+
+  int     i, j;
+  double* matdata;
+  matrix* out;
+
+  mat_err( mat->height <1, "Error (mat_meanc): Matrix height must be positive." );
+  out = mat_create( mat->width, 1 );
+
+  for ( i=0; i< mat->width; i++ ) {
+    out->data[i] = 0.0;
+    matdata = &mat->data[i];
+    for ( j=0; j< mat->height; j++ ) {
+      out->data[i] += *matdata;
+      matdata += out->width;
+    }
+    out->data[i] /= (double) mat->height;
+  }
+
+  return out;
+}
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_mul
+//  Performs matrix multiplication.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_mul ( matrix* matA, matrix* matB )  {
+
+  int i, j, k;
+  matrix* out;
+  double* outdata;
+  double* Adata;
+  double* Bdata;
+
+  mat_err( matA->width != matB->height, "Error (mat_mul): matrix dimension mismatch" );
+  out = mat_create( matB->width, matA->height );
+  outdata = out->data;
+
+  for ( i=0; i< matA->height; i++ ) {
+
+    for ( j=0; j< matB->width; j++ ) {
+      Adata = &matA->data[ i * matA->width ];
+      Bdata = &matB->data[j];
+      *outdata = 0;
+
+      for ( k=0; k< matA->width; k++ ) {
+        *outdata += (*Adata) * (*Bdata);
+        Adata++;
+        Bdata += matB->width;
+      }
+      outdata++;
+
+    }
+  }
+
+  return out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -355,67 +446,6 @@ matrix* covarianceMatrix(matrix* m) {
 ~~~*/
 
 
-/*===========================================================================
- * transposeMatrix
- * Given an matrix, returns the transpose.
- *=========================================================================*/
-/*~~~
-matrix* transposeMatrix(matrix* m) {
-    matrix* out = makeMatrix(m->height, m->width);
-    double* ptrOut;
-    double* ptrM = m->data;
-    int i, j;
-
-    for (i = 0; i < m->height; i++) {
-        ptrOut = &out->data[i];
-        for (j = 0; j < m->width; j++) {
-            *ptrOut = *ptrM;
-            ptrM++;
-            ptrOut += out->width;
-        }
-    }
-
-    return out;
-}
-~~~*/
-
-
-/*===========================================================================
- * multiplyMatrix
- * Given a two matrices, returns the multiplication of the two.
- *=========================================================================*/
-/*~~~
-matrix* multiplyMatrix(matrix* a, matrix* b) {
-    int i, j, k;
-    matrix* out;
-    double* ptrOut;
-    double* ptrA;
-    double* ptrB;
-
-    assert(a->width == b->height, "Matrices have incorrect dimensions. a->width != b->height");
-
-    out = makeMatrix(b->width, a->height);
-    ptrOut = out->data;
-
-    for (i = 0; i < a->height; i++) {
-
-        for (j = 0; j < b->width; j++) {
-            ptrA = &a->data[ i * a->width ];
-            ptrB = &b->data[ j ];
-
-            *ptrOut = 0;
-            for (k = 0; k < a->width; k++) {
-                *ptrOut += *ptrA * *ptrB;
-                ptrA++;
-                ptrB += b->width;
-            }
-            ptrOut++;
-        }
-    }
-
-    return out;
-}
-~~~*/
 
 
 
