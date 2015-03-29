@@ -14,7 +14,7 @@
 void MatIO();
 void MatManip();
 void MatArith();
-
+void MatDecomp();
 
 
 
@@ -23,7 +23,8 @@ int main() {
   printf("\nRunning Matlib demo \n");
   //MatIO();
   //MatManip();
-  MatArith();
+  //MatArith();
+  MatDecomp();
   printf("Program complete\n\n");
   return 0 ;
 }
@@ -31,7 +32,7 @@ int main() {
 
 
 
-// Matrix input and Output
+// Matrix Input and Output
 void MatIO() {
 
   printf("MatIO function testing  \n");
@@ -81,7 +82,7 @@ void MatManip() {
 
 
 
-// Matrix arithmetic
+// Matrix Arithmetic
 void MatArith() {
 
   /*//  Define A matrix
@@ -205,3 +206,34 @@ void MatArith() {
   //mat_clear(F);
 
 }
+
+
+
+// Matrix Decomposition
+void MatDecomp() {
+
+  //  Define A matrix
+  matrix* A = mat_init(3,3);
+  mat_set(A,1,1,3);  mat_set(A,1,2,1);  mat_set(A,1,3,2);
+  mat_set(A,2,1,5);  mat_set(A,2,2,8);  mat_set(A,2,3,6);
+  mat_set(A,3,1,7);  mat_set(A,3,2,4);  mat_set(A,3,3,9);
+  mat_print(A);
+  
+  // Decomp matrices
+  matrix* L = NULL;
+  matrix* U = NULL;
+
+  // LU decomposition
+  mat_LU( A, &L, &U);
+  mat_print(L) ;mat_print(U);
+  A = mat_mul( L, U );
+  mat_print(A);
+  mat_clear(L); mat_clear(U);
+
+  // Clear matrices
+  mat_clear(A);
+
+}
+
+
+

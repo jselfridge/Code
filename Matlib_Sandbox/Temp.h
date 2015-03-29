@@ -57,15 +57,13 @@ matrix*  mat_tran   ( matrix* mat );
 matrix*  mat_skew   ( matrix* vec );
 matrix*  mat_cross  ( matrix* vecA, matrix* vecB );
 double   mat_dot    ( matrix* vecA, matrix* vecB );
-//matrix*  mat_inv    ( matrix* mat );
-//matrix*  mat_solve  ( matrix* matA, matrix* vecB );
+
 
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MatProp (matrix properties)/
 //double   mat_trace   ( matrix* mat );
-//double   mat_det     ( matrix* mat );             // Need LU
 //double   mat_norm1   ( matrix* mat );
 //double   mat_norm2   ( matrix* mat );
 //double   mat_normI   ( matrix* mat );
@@ -74,14 +72,17 @@ double   mat_dot    ( matrix* vecA, matrix* vecB );
 //matrix*  mat_meanc   ( matrix* mat );
 //matrix*  mat_eigval  ( matrix* mat );
 //matrix*  mat_eigvec  ( matrix* mat );
-//matrix*  mat_LU      ( matrix* mat );
 //matrix*  mat_cov     ) matrix* mat );
 
 
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Other
+// MatDecomp (matrix decompositions)
+void    mat_LU      ( matrix* mat, matrix** L, matrix** U );
+//double   mat_det     ( matrix* mat );             // 
+//matrix*  mat_inv    ( matrix* mat );
+//matrix*  mat_solve  ( matrix* matA, matrix* vecB );
 
 
 
@@ -117,13 +118,13 @@ double   mat_dot    ( matrix* vecA, matrix* vecB );
 //matrix* scaleMatrix(matrix* m, double value);     // COMPLETE
 //matrix* covarianceMatrix(matrix* m);
 //void rowSwap(matrix* a, int p, int q);
-//matrix* dotProdMatrix(matrix* a, matrix* b);
-//matrix* dotDiagMatrix(matrix* a, matrix* b);
+//matrix* dotProdMatrix(matrix* a, matrix* b);      // ???
+//matrix* dotDiagMatrix(matrix* a, matrix* b);      // ???
 //matrix* L2_distance(matrix* a, matrix* b);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  matrixadv.h
-//void LUdecomp(mat* a, mat** l, mat** u);
+//void LUdecomp(mat* a, mat** l, mat** u);          // COMPLETE
 //double determinantMatrix(matrix* a);
 //matrix* matrixInverse(matrix* a);
 //matrix* solver(matrix* a, matrix* b);

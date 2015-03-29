@@ -511,36 +511,58 @@ double mat_dot ( matrix* vecA, matrix* vecB ) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_det
-//  Returns the determinant of a square matrix.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//double mat_det( matrix* mat ) {
-/*  
-  double determinantMatrix(matrix* a) {
-    double product = 0.0;
-    matrix* l = NULL;
-    matrix* u = NULL;
-    int i;
 
-    assert(a->width == a->height, "Matrix A must be square.");
-    LUdecomposition(a, &l, &u);
 
-    // Get the product of upper matrix diagonal
-    // We don't need the lower matrix for this calculation.
-    for (i = 0; i < a->width; i++) {
-      product *= u->data[i * a->width + i];
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatDecomp (matrix decompositions)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_LU
+//  Solves for the LU decomposition of a matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_LU ( matrix* mat, matrix** L, matrix** U ) {
+
+  mat_err( *L != NULL || *U != NULL, "Error (mat_LU): Matricies L and U must be null. ");
+  mat_err( mat->rows != mat->cols, "Error (mat_LU): Matrix must be square. ");
+
+  int     n = mat->rows;
+  double  sum;
+  double* data;
+  double* Ldata;
+  double* Udata;
+
+  *L = mat_eye(n);
+  *U = mat_init(n,n);
+
+  data  = mat->data;
+  Ldata = (*L)->data;
+  Udata = (*U)->data;
+
+  // Loop through calculations
+  for ( int j=0; j<n; j++ ) {
+
+    // Derive upper matrix
+    for ( int i=0; i<=j; i++ ) {
+      sum = 0.0;
+      for ( int k=0; k<i; k++ ) {  sum += Ldata[i*n+k] * Udata[k*n+j];  }
+      Udata[i*n+j] = data[i*n+j] - sum;
     }
 
-    freeMatrix(l);
-    freeMatrix(u);
-    return product;
+    // Derive lower matrix
+    for ( int i=j+1; i<n; i++ ) {
+      sum = 0.0;
+      for ( int k=0; k<j; k++ ) {  sum += Ldata[i*n+k] * Udata[k*n+j];  }
+      Ldata[i*n+j] = 1.0/Udata[j*n+j] * ( data[i*n+j] - sum );
+    }
+
   }
-*/
 
-//}
-
-
+  return;
+}
 
 
 
@@ -561,6 +583,15 @@ double mat_dot ( matrix* vecA, matrix* vecB ) {
 
 
 
+
+
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  PENDING AND UNSORTED
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 /*
@@ -580,28 +611,6 @@ matrix* mat_inv ( matrix* mat ) {
   return out;
 }
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//  MatOver (matrix overloaded operators)
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
 
 
 
@@ -629,14 +638,6 @@ double mat_trace ( matrix* mat )  {
   return sum;
 }
 */
-
-
-
-
-
-//double mat_mean    ( matrix* mat );  // WIP
-//matrix*  mat_meanr   ( matrix* mat );  // WIP
-
 
 
 
@@ -668,69 +669,6 @@ matrix* mat_meanc ( matrix* mat ) {
   return out;
 }
 */
-
-
-/*
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_mul
-//  Performs matrix multiplication.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_mul ( matrix* matA, matrix* matB )  {
-
-  int i, j, k;
-  matrix* out;
-  double* outdata;
-  double* Adata;
-  double* Bdata;
-
-  mat_err( matA->width != matB->height, "Error (mat_mul): matrix dimension mismatch" );
-  out = mat_create( matB->width, matA->height );
-  outdata = out->data;
-
-  for ( i=0; i< matA->height; i++ ) {
-
-    for ( j=0; j< matB->width; j++ ) {
-      Adata = &matA->data[ i * matA->width ];
-      Bdata = &matB->data[j];
-      *outdata = 0;
-
-      for ( k=0; k< matA->width; k++ ) {
-        *outdata += (*Adata) * (*Bdata);
-        Adata++;
-        Bdata += matB->width;
-      }
-      outdata++;
-
-    }
-  }
-
-  return out;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -778,9 +716,6 @@ matrix* covarianceMatrix(matrix* m) {
 
 
 
-
-
-
 /*===========================================================================
  * rowSwap
  * Given a matrix, this algorithm will swap rows p and q, provided
@@ -817,7 +752,6 @@ void rowSwap(matrix* a, int p, int q) {
     return;
 }
 ~~~*/
-
 
 
 /*===========================================================================
@@ -919,5 +853,35 @@ matrix* dotDiagonalMatrix(matrix* a, matrix* b) {
 }
 ~~~*/
 
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_det
+//  Returns the determinant of a square matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//double mat_det( matrix* mat ) {
+/*  
+  double determinantMatrix(matrix* a) {
+    double product = 0.0;
+    matrix* l = NULL;
+    matrix* u = NULL;
+    int i;
+
+    assert(a->width == a->height, "Matrix A must be square.");
+    LUdecomposition(a, &l, &u);
+
+    // Get the product of upper matrix diagonal
+    // We don't need the lower matrix for this calculation.
+    for (i = 0; i < a->width; i++) {
+      product *= u->data[i * a->width + i];
+    }
+
+    freeMatrix(l);
+    freeMatrix(u);
+    return product;
+  }
+*/
+
+//}
 
 
