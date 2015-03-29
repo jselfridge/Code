@@ -44,25 +44,32 @@ matrix*  mat_scale  ( matrix* mat, double scale );
 
 
 //~~~~~~~~~~~~~~~~~~~~
-// MatProp (matrix properties)
-//matrix*  mat_trans   ( matrix* mat );                    // Issue with vectors
-//double   mat_trace   ( matrix* mat );
-//double   mat_mean    ( matrix* mat );  // WIP
-//matrix*  mat_meanr   ( matrix* mat );  // WIP
-//matrix*  mat_meanc   ( matrix* mat );  // WIP
-//matrix*  mat_mul     ( matrix* matA, matrix* matB );  // WIP
-
-
-
-
-//~~~~~~~~~~~~~~~~~~~~
 // MatArith (matrix arithmetic)
+matrix*  mat_add    ( matrix* matA, matrix* matB );
+matrix*  mat_sub    ( matrix* matA, matrix* matB );
+matrix*  mat_mul    ( matrix* matA, matrix* matB );
+matrix*  mat_pow    ( matrix* mat, int power );
+
+
+//matrix*  mat_inv    ( matrix* mat );
+//matrix*  mat_trans  ( matrix* mat );
+
 
 
 
 
 //~~~~~~~~~~~~~~~~~~~~
-// MatOver (matrix overloaded operators)
+// MatProp (matrix properties)
+//double   mat_det     ( matrix* mat );
+//double   mat_trace   ( matrix* mat );
+//double   mat_mean    ( matrix* mat );
+//matrix*  mat_meanr   ( matrix* mat );
+//matrix*  mat_meanc   ( matrix* mat );
+
+
+
+
+
 
 
 

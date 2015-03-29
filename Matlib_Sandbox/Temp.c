@@ -281,8 +281,8 @@ matrix* mat_scale ( matrix* mat, double scale ) {
 
   int      elem     = mat->rows * mat->cols;
   matrix*  out      = mat_init( mat->rows, mat->cols );
-  double*  matdata  = mat->data;
   double*  outdata  = out->data;
+  double*  matdata  = mat->data;
 
   for ( int i=0; i<elem; i++ ) {
     *(outdata++) = *(matdata++) * scale;
@@ -298,6 +298,215 @@ matrix* mat_scale ( matrix* mat, double scale ) {
 
 
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatArith (matrix arithmetic)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_add
+//  Adds two arrays of indentical dimension.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_add ( matrix* matA, matrix* matB ) {
+
+  matrix* out;
+  double* outdata;
+  double* Adata;
+  double* Bdata;
+  int     elem = matA->rows * matA->cols;
+
+  mat_err( matA->rows != matB->rows, "Error (mat_add): matrices must have same number of rows" );
+  mat_err( matA->cols != matB->cols, "Error (mat_add): matrices must have same number of columns" );
+
+  out = mat_init( matA->rows, matA->cols );
+  outdata = out->data;
+  Adata = matA->data;
+  Bdata = matB->data;
+
+  for ( int i=0; i<elem; i++ ) {
+    *(outdata++) = *(Adata++) + *(Bdata++);
+  }
+
+  return out;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_sub
+//  Subtracts two arrays of identical dimension.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_sub ( matrix* matA, matrix* matB ) {
+
+  matrix* out;
+  double* outdata;
+  double* Adata;
+  double* Bdata;
+  int     elem = matA->rows * matA->cols;
+
+  mat_err( matA->rows != matB->rows, "Error (mat_sub): matrices must have same number of rows" );
+  mat_err( matA->cols != matB->cols, "Error (mat_sub): matrices must have same number of columns" );
+
+  out = mat_init( matA->rows, matA->cols );
+  outdata = out->data;
+  Adata = matA->data;
+  Bdata = matB->data;
+
+  for ( int i=0; i<elem; i++ ) {
+    *(outdata++) = *(Adata++) - *(Bdata++);
+  }
+
+  return out;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_mul
+//  Matrix multiplication on two matrices with proper dimension.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_mul ( matrix* matA, matrix* matB ) {
+
+  matrix* out;
+  double* outdata;
+  double* Adata;
+  double* Bdata;
+
+  mat_err( matA->cols != matB->rows, "Error (mat_mul): matrix dimensions do not agree" );
+
+  out = mat_init( matA->rows, matB->cols );
+  outdata = out->data;
+
+  for ( int i=0; i< matA->rows; i++ ) {
+    for ( int j=0; j< matB->cols; j++ ) {
+
+      Adata = &matA->data[ i * matA->cols ];
+      Bdata = &matB->data[j];
+      *outdata = 0;
+
+      for ( int k=0; k< matA->rows; k++ ) {
+        *outdata += (*Adata) * (*Bdata);
+        Adata++;
+        Bdata += matB->cols;
+      }
+      outdata++;
+
+    }
+  }
+
+  return out;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_pow
+//  Raise a square matrix to the specified power.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_pow ( matrix* mat, int power ) {
+
+  matrix* out;
+
+  mat_err( mat->rows != mat->cols, "Error (mat_pow): matrix must be square to raise to a power" );
+  mat_err( power<0, "Error (mat_pow): power must be nonnegative" );
+
+  if      ( power==0 )  {  out = mat_eye(mat->rows);  return out;  }
+  else if ( power==1 )  {  return mat;  }
+  else {
+
+    out = mat_init( mat->rows, mat->cols );
+    for ( int i=0; i< power-1; i++ ) {
+      if ( i==0 )  { out = mat_mul( mat, mat ); }
+      else         { out = mat_mul( out, mat ); }
+    }
+
+  }
+
+  return out;
+}
+
+
+
+
+
+
+
+
+
+
+/*
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_det
+//  Matrix determinant of a square matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_det( matrix* mat, int order ) {
+
+
+}
+*/
+/*
+int determinant(int f[20][20],int x)
+{
+  int pr,c[20],d=0,b[20][20],j,p,q,t;
+  if(x==2)
+    {
+      d=0;
+      d=(f[1][1]*f[2][2])-(f[1][2]*f[2][1]);
+      return(d);
+    }
+  else
+    {
+      for(j=1;j<=x;j++)
+	{       
+	  int r=1,s=1;
+	  for(p=1;p<=x;p++)
+	    {
+	      for(q=1;q<=x;q++)
+		{
+		  if(p!=1&&q!=j)
+		    {
+		      b[r][s]=f[p][q];
+		      s++;
+		      if(s>x-1)
+			{
+			  r++;
+			  s=1;
+			}
+		    }
+		}
+	    }
+	  for(t=1,pr=1;t<=(1+j);t++)
+	    pr=(-1)*pr;
+	  c[j]=pr*determinant(b,x-1);
+	}
+      for(j=1,d=0;j<=x;j++)
+	{
+	  d=d+(f[1][j]*c[j]);
+	}
+      return(d);
+    }
+}
+*/
+
+
+
+
+
+
+/*
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_inv
+//  Matrix inverse of a square matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_inv ( matrix* mat ) {
+
+  matrix*  out      = mat_init( mat->rows, mat->cols );
+  double*  outdata  = out->data;
+  double*  matdata  = mat->data;
+
+  mat_err( mat->rows != mat->cols, "Error (mat_inv): inverse requires a square matrix" );
+
+
+  return out;
+}
+*/
 
 
 
@@ -312,11 +521,6 @@ matrix* mat_scale ( matrix* mat, double scale ) {
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  MatProp (matrix properties)
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//  MatArith (matrix arithmetic)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
