@@ -14,6 +14,7 @@
 void MatIO();
 void MatManip();
 void MatArith();
+void MatProp();
 void MatDecomp();
 
 
@@ -24,7 +25,8 @@ int main() {
   //MatIO();
   //MatManip();
   //MatArith();
-  MatDecomp();
+  MatProp();
+  //MatDecomp();
   printf("Program complete\n\n");
   return 0 ;
 }
@@ -157,16 +159,16 @@ void MatArith() {
   //mat_pow(C,2);
   */
   /*//  Transpose
-  matrix* TA = mat_tran(A);
+  matrix* TA = mat_trans(A);
   mat_print(TA);
   mat_clear(TA);
-  matrix* TB = mat_tran(B);
+  matrix* TB = mat_trans(B);
   mat_print(TB);
   mat_clear(TB);
-  matrix* TC = mat_tran(C);
+  matrix* TC = mat_trans(C);
   mat_print(TC);
   mat_clear(TC);
-  matrix* TD = mat_tran(D);
+  matrix* TD = mat_trans(D);
   mat_print(TD);
   mat_clear(TD);
   */
@@ -206,6 +208,45 @@ void MatArith() {
   //mat_clear(F);
 
 }
+
+
+
+
+// Matrix Properties
+void MatProp() {
+
+  //  Define A matrix
+  matrix* A = mat_init(3,3);
+  mat_set(A,1,1,3);  mat_set(A,1,2,5);  mat_set(A,1,3,8);
+  mat_set(A,2,1,7);  mat_set(A,2,2,9);  mat_set(A,2,3,4);
+  mat_set(A,3,1,1);  mat_set(A,3,2,6);  mat_set(A,3,3,2);
+  mat_print(A);
+
+  //  Define B matrix
+  matrix* B = mat_init(2,3);
+  mat_set(B,1,1,7);  mat_set(B,1,2,9);  mat_set(B,1,3,4);
+  mat_set(B,2,1,1);  mat_set(B,2,2,6);  mat_set(B,2,3,2);
+  mat_print(B);
+
+  //  Define C matrix
+  matrix* C = mat_init(3,2);
+  mat_set(C,1,1,5);  mat_set(C,1,2,8);
+  mat_set(C,2,1,9);  mat_set(C,2,2,4);
+  mat_set(C,3,1,1);  mat_set(C,3,2,2);
+  mat_print(C);
+
+  // Trace
+  double TA = mat_trace(A);  printf( "Trace of A: %f \n", TA );
+  double TB = mat_trace(B);  printf( "Trace of B: %f \n", TB );
+  double TC = mat_trace(C);  printf( "Trace of C: %f \n", TC );
+  
+  // Clear matrices
+  mat_clear(A);
+  mat_clear(B);
+  mat_clear(C);
+
+}
+
 
 
 

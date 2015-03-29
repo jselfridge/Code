@@ -429,7 +429,7 @@ matrix* mat_pow ( matrix* mat, int power ) {
 //  mat_trans
 //  Returns the transpose of a rectangular matrix or an array.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_tran ( matrix* mat ) {
+matrix* mat_trans ( matrix* mat ) {
 
   matrix*  out      = mat_init( mat->cols, mat->rows );
   double*  outdata  = out->data;
@@ -509,6 +509,30 @@ double mat_dot ( matrix* vecA, matrix* vecB ) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  MatProp (matrix properties)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_trace
+//  Returns the trace of a matrix (sum of main diagonal)
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_trace ( matrix* mat ) {
+
+  int      n;
+  double*  matdata = mat->data;
+  double   sum = 0.0;
+
+  if   ( mat->rows < mat->cols )  { n = mat->rows; }
+  else                            { n = mat->cols;  }
+
+  for ( int i=0; i<n; i++ ) {  
+    sum += *matdata;
+    matdata += mat->cols + 1;
+  }
+
+  return sum;
+}
+
+
 
 
 
@@ -613,31 +637,6 @@ matrix* mat_inv ( matrix* mat ) {
 */
 
 
-
-
-/*
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_trace
-//  Returns the scalar trace of a rectangular matrix, which 
-//  is the summation along the main diagonal.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double mat_trace ( matrix* mat )  {
-
-  int      i, size;
-  double*  matdata = mat->data;
-  double   sum = 0.0;
-
-  if ( mat->height < mat->width )  { size = mat->height; }
-  else                             { size = mat->width;  }
-
-  for ( i=0; i<size; i++ ) {
-    sum += *matdata;
-    matdata += mat->width + 1;
-  }
-
-  return sum;
-}
-*/
 
 
 
