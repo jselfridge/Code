@@ -2,6 +2,8 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  Temp.h - Matlib Library Development
 //  Justin M Selfridge
+//  Temporary header file to develop the functions 
+//  for the Matlib Library.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef _TEMP_H
 #define _TEMP_H
@@ -51,18 +53,19 @@ matrix*  mat_add    ( matrix* matA, matrix* matB );
 matrix*  mat_sub    ( matrix* matA, matrix* matB );
 matrix*  mat_mul    ( matrix* matA, matrix* matB );
 matrix*  mat_pow    ( matrix* mat, int power );
+matrix*  mat_tran   ( matrix* mat );
+matrix*  mat_skew   ( matrix* vec );
+matrix*  mat_cross  ( matrix* vecA, matrix* vecB );
+double   mat_dot    ( matrix* vecA, matrix* vecB );
 //matrix*  mat_inv    ( matrix* mat );
-//matrix*  mat_trans  ( matrix* mat );
-//matrix*  mat_skew   ( matrix* vec );
-//matrix*  mat_dot    ( matrix* matA, matrix* matB );
 //matrix*  mat_solve  ( matrix* matA, matrix* vecB );
 
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MatProp (matrix properties)/
-//double   mat_det     ( matrix* mat );
 //double   mat_trace   ( matrix* mat );
+//double   mat_det     ( matrix* mat );             // Need LU
 //double   mat_norm1   ( matrix* mat );
 //double   mat_norm2   ( matrix* mat );
 //double   mat_normI   ( matrix* mat );
@@ -108,7 +111,7 @@ matrix*  mat_pow    ( matrix* mat, int power );
 //void printMatrix(matrix* m);                      // COMPLETE
 //matrix* eyeMatrix(int n);                         // COMPLETE
 //double traceMatrix(matrix* m);
-//matrix* transposeMatrix(matrix* m);
+//matrix* transposeMatrix(matrix* m);               // COMPLETE
 //matrix* meanMatrix(matrix* m);
 //matrix* multiplyMatrix(matrix* a, matrix* b);     // COMPLETE
 //matrix* scaleMatrix(matrix* m, double value);     // COMPLETE

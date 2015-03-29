@@ -2,6 +2,8 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  Temp.c - Matlib Library Development 
 //  Justin M Selfridge
+//  Temporary source code file to develop the functions
+//  for the Matlib Labrary.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Temp.h"
 #include <stdio.h>
@@ -189,7 +191,7 @@ void mat_set ( matrix* mat, int row, int col, double val ) {
   mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_set): index exceeds matrix dimensions" );
 
   matdata = mat->data;
-  offset = (row-1) * (mat->rows) + (col-1);
+  offset = (row-1) * (mat->cols) + (col-1);
   matdata += offset;
   *matdata = val;
 
@@ -209,7 +211,7 @@ double mat_get ( matrix* mat, int row, int col ) {
   mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_get): index exceeds matrix dimensions" );
 
   matdata = mat->data;
-  offset = (row-1) * (mat->rows) + (col-1);
+  offset = (row-1) * (mat->cols) + (col-1);
   matdata += offset;
   val = *matdata;
 
@@ -408,7 +410,7 @@ matrix* mat_pow ( matrix* mat, int power ) {
   mat_err( power<0, "Error (mat_pow): power must be nonnegative" );
 
   if      ( power==0 )  {  out = mat_eye(mat->rows);  return out;  }
-  else if ( power==1 )  {  return mat;  }
+  else if ( power==1 )  {  out = mat_copy(mat);       return out;  }
   else {
 
     out = mat_init( mat->rows, mat->cols );
@@ -423,6 +425,79 @@ matrix* mat_pow ( matrix* mat, int power ) {
 }
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_trans
+//  Returns the transpose of a rectangular matrix or an array.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_tran ( matrix* mat ) {
+
+  matrix*  out      = mat_init( mat->cols, mat->rows );
+  double*  outdata  = out->data;
+  double*  matdata  = mat->data;
+
+  for ( int i=0; i< mat->rows; i++ ) {
+    outdata = &out->data[i];
+    for ( int j=0; j< mat->cols; j++ ) {
+      *outdata = *matdata;
+      matdata++;
+      outdata += out->cols;
+    }
+  }
+
+  return out;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_skew
+//  Returns skew symmetric matrix of a three element vector.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_skew ( matrix* vec ) {
+
+  matrix*  out = mat_init(3,3);
+  double   x, y, z;
+
+  mat_err( ( vec->rows!=3 || vec->cols!=1 ), "Error (mat_skew): vector must be [3x1]" );
+
+  x = mat_get(vec,1,1);  mat_set(out,3,2,x);  mat_set(out,2,3,-x);
+  y = mat_get(vec,2,1);  mat_set(out,1,3,y);  mat_set(out,3,1,-y);
+  z = mat_get(vec,3,1);  mat_set(out,2,1,z);  mat_set(out,1,2,-z);
+
+  return out;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_cross
+//  Returns cross product of two three element vectors.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_cross ( matrix* vecA, matrix* vecB ) {
+
+  matrix*  out = mat_init(3,1);
+
+  mat_err( ( vecA->rows!=3 || vecA->cols!=1 ), "Error (mat_cross): vector A must be [3x1]" );
+  mat_err( ( vecB->rows!=3 || vecB->cols!=1 ), "Error (mat_cross): vector B must be [3x1]" );
+
+  return out = mat_mul( mat_skew(vecA), vecB );
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_dot
+//  Returns dot product of two arbitrary length vectors.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_dot ( matrix* vecA, matrix* vecB ) {
+
+  mat_err( ( vecA->cols!=1 || vecB->cols!=1 ), "Error (mat_dot): dot product requires vector inputs" );
+  mat_err( ( vecA->rows != vecB->rows ), "Error (mat_dot): vectors must be the same length" );
+
+  double out = 0.0;
+  for ( int r=1; r<= vecA->rows; r++ ) {
+    out += (mat_get(vecA,r,1)) * (mat_get(vecB,r,1)) ;
+  }
+
+  return out;
+}
 
 
 
@@ -431,59 +506,57 @@ matrix* mat_pow ( matrix* mat, int power ) {
 
 
 
-/*
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  MatProp (matrix properties)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_det
-//  Matrix determinant of a square matrix.
+//  Returns the determinant of a square matrix.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double mat_det( matrix* mat, int order ) {
+//double mat_det( matrix* mat ) {
+/*  
+  double determinantMatrix(matrix* a) {
+    double product = 0.0;
+    matrix* l = NULL;
+    matrix* u = NULL;
+    int i;
+
+    assert(a->width == a->height, "Matrix A must be square.");
+    LUdecomposition(a, &l, &u);
+
+    // Get the product of upper matrix diagonal
+    // We don't need the lower matrix for this calculation.
+    for (i = 0; i < a->width; i++) {
+      product *= u->data[i * a->width + i];
+    }
+
+    freeMatrix(l);
+    freeMatrix(u);
+    return product;
+  }
+*/
+
+//}
 
 
-}
-*/
-/*
-int determinant(int f[20][20],int x)
-{
-  int pr,c[20],d=0,b[20][20],j,p,q,t;
-  if(x==2)
-    {
-      d=0;
-      d=(f[1][1]*f[2][2])-(f[1][2]*f[2][1]);
-      return(d);
-    }
-  else
-    {
-      for(j=1;j<=x;j++)
-	{       
-	  int r=1,s=1;
-	  for(p=1;p<=x;p++)
-	    {
-	      for(q=1;q<=x;q++)
-		{
-		  if(p!=1&&q!=j)
-		    {
-		      b[r][s]=f[p][q];
-		      s++;
-		      if(s>x-1)
-			{
-			  r++;
-			  s=1;
-			}
-		    }
-		}
-	    }
-	  for(t=1,pr=1;t<=(1+j);t++)
-	    pr=(-1)*pr;
-	  c[j]=pr*determinant(b,x-1);
-	}
-      for(j=1,d=0;j<=x;j++)
-	{
-	  d=d+(f[1][j]*c[j]);
-	}
-      return(d);
-    }
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -519,9 +592,6 @@ matrix* mat_inv ( matrix* mat ) {
 
 
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//  MatProp (matrix properties)
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -532,33 +602,6 @@ matrix* mat_inv ( matrix* mat ) {
 
 
 
-
-
-
-/*
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_trans
-//  Returns the transpose of a rectangular matrix or an array.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_trans ( matrix* mat )  {
-
-  int     i, j;
-  matrix* out = mat_create( mat->height, mat->width );
-  double* outdata;
-  double* matdata = mat->data;
-
-  for (i = 0; i < mat->height; i++) {
-    outdata = &out->data[i];
-    for (j = 0; j < mat->width; j++) {
-      *outdata = *matdata;
-      matdata++;
-      outdata += out->width;
-    }
-  }
-
-  return out;
-}
-*/
 
 
 
