@@ -609,11 +609,79 @@ double mat_det ( matrix* mat ) {
   return product;
 }
 
+/*
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_inv
+//  Returns the inverse of a square matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_inv ( matrix* mat ) {
 
 
+}
+*/
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_divL
+//  Solves for x in b=Ax, equivalent to x=A\b.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_divL ( matrix* A, matrix* b ) {
 
+  int     Ar = A->rows;  
+  int     Ac = A->cols;
+  int     Br = b->rows;
+  int     Bc = b->cols;
+  double* Bd = b->data;
+
+  mat_err( Ar != Ac, "Error (mat_divL): A matrix must be square. " );
+  mat_err( Ar != Br, "Error (mat_divL): A and b must be the same height." );
+
+  matrix* L = NULL;  
+  matrix* U = NULL;
+  mat_LU( A, &L, &U );
+  double* Ld = L->data;
+  double* Ud = U->data;
+
+  matrix* y;
+  matrix* x;
+  y = mat_init( 1,  Ar );
+  x = mat_init( Br, Bc );
+  double* yd = y->data;
+  double* xd = x->data;
+
+  double sum;
+  double* row;
+
+  for ( int k=0; k<Bc; k++ ) {
+
+    // L backward subsitituion:  L * y = B_k
+    for ( int i=0; i<Ar; i++ ) {
+      row = Ld + i*Ac;
+      sum = 0;
+      for ( int j=0; j<i; j++ ) {
+	sum += yd[j] * (*row++);
+      }
+      yd[i] = ( Bd[i*Bc+k] - sum) / *row;
+    }
+
+    // U backward subsitituion:  U * x = y
+    for ( int i= Ar-1; i>=0; i-- ) {
+      row = Ud + (i*Ac) + (Ac-1);
+      sum = 0;
+      for ( int j= Ac-1; j>i; j-- ) {
+	sum += xd[j*Bc+k] * (*row--);
+      }
+      xd[i*Bc+k] = (yd[i] - sum) / *row;
+    }
+
+  }
+
+  mat_clear(L);
+  mat_clear(U);
+  mat_clear(y);
+
+  return x;
+}
 
 
 
@@ -648,14 +716,6 @@ double mat_det ( matrix* mat ) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 matrix* mat_inv ( matrix* mat ) {
 
-  matrix*  out      = mat_init( mat->rows, mat->cols );
-  double*  outdata  = out->data;
-  double*  matdata  = mat->data;
-
-  mat_err( mat->rows != mat->cols, "Error (mat_inv): inverse requires a square matrix" );
-
-
-  return out;
 }
 */
 

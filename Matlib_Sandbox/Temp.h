@@ -83,10 +83,10 @@ double   mat_trace   ( matrix* mat );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MatDecomp (matrix decompositions)
-void     mat_LU      ( matrix* mat, matrix** L, matrix** U );
-double   mat_det     ( matrix* mat );             // 
+void     mat_LU     ( matrix* mat, matrix** L, matrix** U );
+double   mat_det    ( matrix* mat );
 //matrix*  mat_inv    ( matrix* mat );
-//matrix*  mat_solve  ( matrix* matA, matrix* vecB );
+matrix*  mat_divL  ( matrix* A, matrix* b );
 
 
 
