@@ -3,21 +3,22 @@
 //  Main.c - Matlib Library Development
 //  Justin M Selfridge
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "Temp.h"
+
 
 // Standard include files
 #include <stdio.h>
 
-// Custom include files
-#include "Temp.h"
 
 // Function prototypes
 void InitMat();
-void ClearMat();
 void MatIO();
 void MatManip();
 void MatArith();
 void MatProp();
 void MatDecomp();
+void ClearMat();
+
 
 // Global variables
 matrix* V3a;
@@ -37,7 +38,6 @@ matrix* M44;
 
 // Main program 
 int main() {
-
   printf("\nRunning Matlib demo \n");
   InitMat();
   //MatIO();
@@ -47,7 +47,6 @@ int main() {
   MatDecomp();
   ClearMat();
   printf("Program complete\n\n");
-
   return 0 ;
 }
 
@@ -56,21 +55,18 @@ int main() {
 
 // InitMat (initialize the matrices for demo)
 void InitMat() {
-  printf("\nInitializing the matrices for demo program \n");
 
   //  Define first 3x1 vector
   V3a = mat_init(3,1);
   mat_set(V3a,1,1,6);
   mat_set(V3a,2,1,2);
   mat_set(V3a,3,1,9);
-  printf("V3a: ");  mat_print(V3a);
 
   //  Define second 3x1 vector
   V3b = mat_init(3,1);
   mat_set(V3b,1,1,4);
   mat_set(V3b,2,1,8);
   mat_set(V3b,3,1,3);
-  printf("V3b: ");  mat_print(V3b);
   
   //  Define 4x1 vector
   V4 = mat_init(4,1);
@@ -78,47 +74,40 @@ void InitMat() {
   mat_set(V4,2,1,2);
   mat_set(V4,3,1,7);
   mat_set(V4,4,1,1);
-  printf("V4: ");  mat_print(V4);
   
   //  Define 2x2 matrix
   M22 = mat_init(2,2);
   mat_set(M22,1,1,3);  mat_set(M22,1,2,5);
   mat_set(M22,2,1,7);  mat_set(M22,2,2,9);
-  printf("M22: ");  mat_print(M22);
 
   //  Define 2x3 matrix
   M23 = mat_init(2,3);
   mat_set(M23,1,1,6);  mat_set(M23,1,2,1);  mat_set(M23,1,3,2);
   mat_set(M23,2,1,9);  mat_set(M23,2,2,7);  mat_set(M23,2,3,4);
-  printf("M23: ");  mat_print(M23);
 
   //  Define 3x2 matrix
   M32 = mat_init(3,2);
   mat_set(M32,1,1,6);  mat_set(M32,1,2,7);
   mat_set(M32,2,1,2);  mat_set(M32,2,2,5);
   mat_set(M32,3,1,9);  mat_set(M32,3,2,4);
-  printf("M32: ");  mat_print(M32);
   
   // Define first 3x3 matrix
   M33a = mat_init(3,3);
   mat_set(M33a,1,1,3);  mat_set(M33a,1,2,5);  mat_set(M33a,1,3,8);
   mat_set(M33a,2,1,7);  mat_set(M33a,2,2,9);  mat_set(M33a,2,3,4);
   mat_set(M33a,3,1,1);  mat_set(M33a,3,2,6);  mat_set(M33a,3,3,2);
-  printf("M33a: ");  mat_print(M33a);
 
   // Define second 3x3 matrix
   M33b = mat_init(3,3);
   mat_set(M33b,1,1,3);  mat_set(M33b,1,2,1);  mat_set(M33b,1,3,2);
   mat_set(M33b,2,1,5);  mat_set(M33b,2,2,8);  mat_set(M33b,2,3,6);
   mat_set(M33b,3,1,7);  mat_set(M33b,3,2,4);  mat_set(M33b,3,3,9);
-  printf("M33b: ");  mat_print(M33b);
 
   // Define 3x4 matrix
   M34 = mat_init(3,4);
   mat_set(M34,1,1,3);  mat_set(M34,1,2,7);  mat_set(M34,1,3,6);  mat_set(M34,1,4,7);
   mat_set(M34,2,1,5);  mat_set(M34,2,2,4);  mat_set(M34,2,3,2);  mat_set(M34,2,4,3);
   mat_set(M34,3,1,1);  mat_set(M34,3,2,8);  mat_set(M34,3,3,5);  mat_set(M34,3,4,9);
-  printf("M34: ");  mat_print(M34);
 
   // Define 4x3 matrix
   M43 = mat_init(4,3);
@@ -126,7 +115,6 @@ void InitMat() {
   mat_set(M43,2,1,2);  mat_set(M43,2,2,3);  mat_set(M43,2,3,6);
   mat_set(M43,3,1,4);  mat_set(M43,3,2,7);  mat_set(M43,3,3,8);
   mat_set(M43,4,1,8);  mat_set(M43,4,2,9);  mat_set(M43,4,3,1);
-  printf("M43: ");  mat_print(M43);
 
   // Define 4x4 matrix
   M44 = mat_init(4,4);
@@ -134,9 +122,7 @@ void InitMat() {
   mat_set(M44,2,1,5);  mat_set(M44,2,2,8);  mat_set(M44,2,3,6);  mat_set(M44,2,4,3);
   mat_set(M44,3,1,7);  mat_set(M44,3,2,4);  mat_set(M44,3,3,9);  mat_set(M44,3,4,9);
   mat_set(M44,4,1,4);  mat_set(M44,4,2,8);  mat_set(M44,4,3,1);  mat_set(M44,4,4,2);
-  printf("M44: ");  mat_print(M44);
 
-  printf("\n\n");
 }
 
 
@@ -144,7 +130,6 @@ void InitMat() {
 
 // ClearMat (clear the matrices used in demo)
 void ClearMat() {
-
   mat_clear(V3a);
   mat_clear(V3b);
   mat_clear(V4);
@@ -156,7 +141,6 @@ void ClearMat() {
   mat_clear(M34);
   mat_clear(M43);
   mat_clear(M44);
-
 }
 
 
@@ -165,7 +149,6 @@ void ClearMat() {
 // Matrix Input and Output
 void MatIO() {
   printf("Testing input and output capabilities \n");
-
   matrix* M = mat_init(5,2);
   mat_print(M);
   mat_write(M,"matM");
@@ -173,7 +156,6 @@ void MatIO() {
   mat_print(N);
   mat_clear(M); 
   mat_clear(N);
-
   printf("\n\n");
 }
 
@@ -197,15 +179,15 @@ void MatManip() {
   mat_print(P);
 
   // Set element value
-  mat_set( P, 1, 4, 14.0 );
-  mat_set( P, 3, 2, 32.0 );
+  mat_set(P,1,4,14.0);
+  mat_set(P,3,2,32.0);
   mat_print(P);
 
-  // Fet element value
+  // Get element value
   double val;
-  val = mat_get( P, 1, 4 );
+  val = mat_get(P,1,4);
   printf( "Element value: %f\n", val );
-  val = mat_get( P, 3, 2 );
+  val = mat_get(P,3,2);
   printf( "Element value: %f\n", val );
 
   // Ones matrix
@@ -226,24 +208,33 @@ void MatManip() {
 
 // Matrix Arithmetic
 void MatArith() {
+  printf("Matrix Arithmetic \n");
+
+  // Display matrices
+  mat_print(V3a);
+  mat_print(V3b);
+  mat_print(M33a);
+  mat_print(M33b);
 
   //  Addition
+  matrix* Vadd = mat_add(V3a,V3b);
+  mat_print(Vadd);  mat_clear(Vadd);
   matrix* Madd = mat_add(M33a,M33b);
-  mat_print(Madd);
-  mat_clear(Madd);
+  mat_print(Madd);  mat_clear(Madd);
 
   //  Subtraction
+  matrix* Vsub = mat_sub(V3a,V3b);
+  mat_print(Vsub);  mat_clear(Vsub);
   matrix* Msub = mat_sub(M33a,M33b);
-  mat_print(Msub);
-  mat_clear(Msub);
+  mat_print(Msub);  mat_clear(Msub);
 
   //  Multiplication
   matrix* Mmul33 = mat_mul(M33a,M33b);
-  mat_print(Mmul33);
-  mat_clear(Mmul33);
+  mat_print(Mmul33);  mat_clear(Mmul33);
   matrix* Mmul23 = mat_mul(M23,M33a);
-  mat_print(Mmul23);
-  mat_clear(Mmul23);
+  mat_print(Mmul23);  mat_clear(Mmul23);
+  matrix* Mmul4 = mat_mul(M44,V4);
+  mat_print(Mmul4);  mat_clear(Mmul4);
 
   //  Power
   matrix* Mpow;
@@ -252,32 +243,27 @@ void MatArith() {
     mat_print(Mpow);
   }
   mat_clear(Mpow);
-  
+
   //  Transpose
   matrix* T1 = mat_trans(V4);
-  mat_print(T1);
-  mat_clear(T1);
+  mat_print(T1);  mat_clear(T1);
   matrix* T2 = mat_trans(M23);
-  mat_print(T2);
-  mat_clear(T2);
+  mat_print(T2);  mat_clear(T2);
   matrix* T3 = mat_trans(M43);
-  mat_print(T3);
-  mat_clear(T3);
+  mat_print(T3);  mat_clear(T3);
   matrix* T4 = mat_trans(M33a);
-  mat_print(T4);
-  mat_clear(T4);
+  mat_print(T4);  mat_clear(T4);
 
   //  Skew Symmetric
   matrix* skew = mat_skew(V3a);
-  mat_print(skew);
-  mat_clear(skew);
+  mat_print(skew);  mat_clear(skew);
   
   //  Cross product
   matrix* cross;
   cross = mat_cross(V3a,V3b);
   mat_print(cross);
   cross = mat_cross(V3a,V3a);
-  mat_print(cross);
+  mat_print(cross);  
   mat_clear(cross);
   
   //  Dot product
@@ -312,23 +298,29 @@ void MatProp() {
 void MatDecomp() {
   printf("Matrix decomposition \n");
 
-  // Decomp matrices
+  // LU decomposition [3x3]
   matrix* L3 = NULL;
   matrix* U3 = NULL;
-  matrix* L4 = NULL;
-  matrix* U4 = NULL;
-
-  // LU decomposition [3x3]
   mat_LU( M33a, &L3, &U3 );
-  mat_print(L3); mat_print(U3);
+  mat_print(L3);
+  mat_print(U3);
   matrix* LU3 = mat_mul( L3, U3 );
-  mat_print(LU3);  mat_clear(LU3);
+  mat_print(LU3);
+  mat_clear(LU3);
+  mat_clear(L3);
+  mat_clear(U3);
 
   // LU decomposition [4x4]
+  matrix* L4 = NULL;
+  matrix* U4 = NULL;
   mat_LU( M44, &L4, &U4 );
-  mat_print(L4); mat_print(U4);
+  mat_print(L4);
+  mat_print(U4);
   matrix* LU4 = mat_mul( L4, U4 );
-  mat_print(LU4);  mat_clear(LU4);
+  mat_print(LU4);
+  mat_clear(LU4);
+  mat_clear(L4);
+  mat_clear(U4);
 
   // Determinant
   double det3 = mat_det(M33a);
@@ -349,37 +341,30 @@ void MatDecomp() {
   // Left division
   matrix* xL31 = mat_divL( M33a, V3a );
   mat_print(xL31);
+  mat_print( mat_mul(M33a,xL31) );
   mat_clear(xL31);
   matrix* xL32 = mat_divL( M33a, M32 );
   mat_print(xL32);
+  mat_print( mat_mul(M33a,xL32) );
   mat_clear(xL32);
   matrix* xL41 = mat_divL( M44, V4 );
   mat_print(xL41);
+  mat_print( mat_mul(M44,xL41) );
   mat_clear(xL41);
-
 
   // Right division
   matrix* xR33 = mat_divR( M33b, M33a );
-  printf("xR33: ");  mat_print(xR33);
-  matrix* test33 = mat_mul( xR33, M33a );
-  printf("test33: ");  mat_print(test33);
-  mat_clear(xR33);  mat_clear(test33);
+  mat_print(xR33);
+  mat_print( mat_mul(xR33,M33a) );
+  mat_clear(xR33);
   matrix* xR23 = mat_divR( M23, M33a );
-  printf("xR23: ");  mat_print(xR23);
-  matrix* test23 = mat_mul( xR23, M33a );
-  printf("test23: ");  mat_print(test23);
-  mat_clear(xR23);  mat_clear(test23);
+  mat_print(xR23);
+  mat_print( mat_mul(xR23,M33a) );
+  mat_clear(xR23);
   matrix* xR14 = mat_divR( mat_trans(V4), M44 );
-  printf("xR14: ");  mat_print(xR14);
-  matrix* test14 = mat_mul( xR14, M44 );
-  printf("test14: ");  mat_print(test14);
-  mat_clear(xR14);  mat_clear(test14);
-
-  // Clear matrices
-  mat_clear(L3); 
-  mat_clear(U3);
-  mat_clear(L4); 
-  mat_clear(U4);
+  mat_print(xR14);
+  mat_print( mat_mul(xR14,M44) );
+  mat_clear(xR14);
 
   printf("\n\n");
 }
