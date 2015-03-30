@@ -333,6 +333,14 @@ void MatDecomp() {
   double det4 = mat_det(M44);
   printf( "det4: %f \n", det4 );
 
+  // Matrix inverse
+  matrix* Minv3 = mat_inv(M33a);
+  mat_print(Minv3);
+  mat_clear(Minv3);
+  matrix* Minv4 = mat_inv(M44);
+  mat_print(Minv4);
+  mat_clear(Minv4);
+
   // Left division
   matrix* x31 = mat_divL( M33a, V3a );
   mat_print(x31);

@@ -609,16 +609,21 @@ double mat_det ( matrix* mat ) {
   return product;
 }
 
-/*
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_inv
 //  Returns the inverse of a square matrix.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 matrix* mat_inv ( matrix* mat ) {
 
+  mat_err( mat->rows != mat->cols, "Error (mat_inv): Matrix must be square." );
 
+  matrix* eye = mat_eye( mat->rows );
+  matrix* inv = mat_divL( mat, eye );
+
+  mat_clear(eye);
+  return inv;
 }
-*/
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
