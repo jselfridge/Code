@@ -98,13 +98,13 @@ matrix*  mat_divR  ( matrix* B, matrix* A );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  L2_distance.h
-//matrix* L2_distance(matrix* a, matrix* b);
+//matrix* L2_distance(matrix* a, matrix* b);        // NOT INTERESTED
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  eigen.h
-//double powerMethod(matrix* a);
+//double powerMethod(matrix* a);                    // NOT INTERESTED
 //matrix* francisQRstep(matrix* a);
-//matrix* eigenvector(matrix* a, double eigenvalue);
+//matrix* eigenvec(matrix* a, double eigenval);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  matrix.h
@@ -118,36 +118,36 @@ matrix*  mat_divR  ( matrix* B, matrix* A );
 //matrix* eyeMatrix(int n);                         // COMPLETE
 //double traceMatrix(matrix* m);                    // COMPLETE
 //matrix* transposeMatrix(matrix* m);               // COMPLETE
-//matrix* meanMatrix(matrix* m);
+//matrix* meanMatrix(matrix* m);                    // NOT INTERSTED
 //matrix* multiplyMatrix(matrix* a, matrix* b);     // COMPLETE
 //matrix* scaleMatrix(matrix* m, double value);     // COMPLETE
-//matrix* covarianceMatrix(matrix* m);
+//matrix* covarianceMatrix(matrix* m);              // NOT INTERSETED
 //void rowSwap(matrix* a, int p, int q);
-//matrix* dotProdMatrix(matrix* a, matrix* b);      // ???
-//matrix* dotDiagMatrix(matrix* a, matrix* b);      // ???
-//matrix* L2_distance(matrix* a, matrix* b);
+//matrix* dotProdMatrix(matrix* a, matrix* b);      // NOT INTERESTED
+//matrix* dotDiagMatrix(matrix* a, matrix* b);      // NOT INTERSETED
+//matrix* L2_distance(matrix* a, matrix* b);        // NOT INTERESTED
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  matrixadv.h
 //void LUdecomp(mat* a, mat** l, mat** u);          // COMPLETE
 //double determinantMatrix(matrix* a);              // COMPLETE
-//matrix* matrixInverse(matrix* a);
-//matrix* solver(matrix* a, matrix* b);
+//matrix* matrixInverse(matrix* a);                 // COMPLETE
+//matrix* solver(matrix* a, matrix* b);             // COMPLETE
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  qr.h
-//void gram_schmidt(mat* a, mat** q, mat** r);
-//matrix* unitVectorRows(matrix* a);
-//matrix* unitVectorColumns(matrix* a);
+//void gram_schmidt(mat* a, mat** q, mat** r);      // NOT INTERSETED
+//matrix* unitVectorRows(matrix* a);                // NOT INTERSETED
+//matrix* unitVectorColumns(matrix* a);             // NOT INTERSETED
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  qsort.h
-//void quicksort(double *a, int start, int end);
-//int partition(double *a, int start, int end);
+//void quicksort(double *a, int start, int end);    // NOT INTERSETED
+//int partition(double *a, int start, int end);     // NOT INTERESTED
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  svd.h
-//void svd(matrix* a);
+//void svd(matrix* a);                              // NOT INTERESTED
 
 
 
