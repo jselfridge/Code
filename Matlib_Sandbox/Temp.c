@@ -384,7 +384,7 @@ matrix* mat_mul ( matrix* matA, matrix* matB ) {
       Bdata = &matB->data[j];
       *outdata = 0;
 
-      for ( int k=0; k< matA->rows; k++ ) {
+      for ( int k=0; k< matA->cols; k++ ) {
         *outdata += (*Adata) * (*Bdata);
         Adata++;
         Bdata += matB->cols;
@@ -628,18 +628,17 @@ matrix* mat_inv ( matrix* mat ) {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  mat_divL
-//  Solves for x in b=Ax, equivalent to x=A\b.
+//  Solves for X in B=AX, equivalent to X=A\B.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-matrix* mat_divL ( matrix* A, matrix* b ) {
+matrix* mat_divL ( matrix* A, matrix* B ) {
 
-  int     Ar = A->rows;  
-  int     Ac = A->cols;
-  int     Br = b->rows;
-  int     Bc = b->cols;
-  double* Bd = b->data;
+  mat_err( A->rows != A->cols, "Error (mat_divL): A matrix must be square. " );
+  mat_err( A->rows != B->rows, "Error (mat_divL): A and B must be the same height." );
 
-  mat_err( Ar != Ac, "Error (mat_divL): A matrix must be square. " );
-  mat_err( Ar != Br, "Error (mat_divL): A and b must be the same height." );
+  int     n  = A->rows;  
+  int     r  = B->rows;
+  int     c  = B->cols;
+  double* Bd = B->data;
 
   matrix* L = NULL;  
   matrix* U = NULL;
@@ -647,53 +646,62 @@ matrix* mat_divL ( matrix* A, matrix* b ) {
   double* Ld = L->data;
   double* Ud = U->data;
 
-  matrix* y;
-  matrix* x;
-  y = mat_init( 1,  Ar );
-  x = mat_init( Br, Bc );
-  double* yd = y->data;
-  double* xd = x->data;
+  matrix* Y;
+  matrix* X;
+  Y = mat_init(1,n);
+  X = mat_init(r,c);
+  double* Yd = Y->data;
+  double* Xd = X->data;
 
-  double sum;
+  double  sum;
   double* row;
 
-  for ( int k=0; k<Bc; k++ ) {
+  for ( int k=0; k<c; k++ ) {
 
-    // L backward subsitituion:  L * y = B_k
-    for ( int i=0; i<Ar; i++ ) {
-      row = Ld + i*Ac;
+    // L backward subsitituion:  L * y = B
+    for ( int i=0; i<n; i++ ) {
+      row = Ld + i*n;
       sum = 0;
       for ( int j=0; j<i; j++ ) {
-	sum += yd[j] * (*row++);
+	sum += Yd[j] * (*row++);
       }
-      yd[i] = ( Bd[i*Bc+k] - sum) / *row;
+      Yd[i] = ( Bd[i*c+k] - sum) / *row;
     }
 
     // U backward subsitituion:  U * x = y
-    for ( int i= Ar-1; i>=0; i-- ) {
-      row = Ud + (i*Ac) + (Ac-1);
+    for ( int i=n-1; i>=0; i-- ) {
+      row = Ud + (i*n) + (n-1);
       sum = 0;
-      for ( int j= Ac-1; j>i; j-- ) {
-	sum += xd[j*Bc+k] * (*row--);
+      for ( int j=n-1; j>i; j-- ) {
+	sum += Xd[j*c+k] * (*row--);
       }
-      xd[i*Bc+k] = (yd[i] - sum) / *row;
+      Xd[i*c+k] = (Yd[i] - sum) / *row;
     }
 
   }
 
   mat_clear(L);
   mat_clear(U);
-  mat_clear(y);
+  mat_clear(Y);
 
-  return x;
+  return X;
 }
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_divR
+//  Solves for X in B=XA, equivalent to X=B/A.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+matrix* mat_divR ( matrix* B, matrix* A ) {
 
+  mat_err( A->rows != A->cols, "Error (mat_divR): A matrix must be square. " );
+  mat_err( A->cols != B->cols, "Error (mat_divR): A and B must be the same width." );
 
+  matrix* X = mat_init( B->rows, B->cols );
+  X = mat_mul( B, mat_inv(A) );
 
-
-
+  return X;
+}
 
 
 

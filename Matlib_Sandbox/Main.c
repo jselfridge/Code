@@ -88,8 +88,8 @@ void InitMat() {
 
   //  Define 2x3 matrix
   M23 = mat_init(2,3);
-  mat_set(M23,1,1,7);  mat_set(M23,1,2,9);  mat_set(M23,1,3,4);
-  mat_set(M23,2,1,1);  mat_set(M23,2,2,6);  mat_set(M23,2,3,2);
+  mat_set(M23,1,1,6);  mat_set(M23,1,2,1);  mat_set(M23,1,3,2);
+  mat_set(M23,2,1,9);  mat_set(M23,2,2,7);  mat_set(M23,2,3,4);
   printf("M23: ");  mat_print(M23);
 
   //  Define 3x2 matrix
@@ -226,7 +226,7 @@ void MatManip() {
 
 // Matrix Arithmetic
 void MatArith() {
-  
+
   //  Addition
   matrix* Madd = mat_add(M33a,M33b);
   mat_print(Madd);
@@ -236,12 +236,15 @@ void MatArith() {
   matrix* Msub = mat_sub(M33a,M33b);
   mat_print(Msub);
   mat_clear(Msub);
-  
+
   //  Multiplication
-  matrix* Mmul = mat_mul(M33a,M33b);
-  mat_print(Mmul);
-  mat_clear(Mmul);
-  
+  matrix* Mmul33 = mat_mul(M33a,M33b);
+  mat_print(Mmul33);
+  mat_clear(Mmul33);
+  matrix* Mmul23 = mat_mul(M23,M33a);
+  mat_print(Mmul23);
+  mat_clear(Mmul23);
+
   //  Power
   matrix* Mpow;
   for ( int i=0; i<=2; i++ ) {
@@ -336,21 +339,41 @@ void MatDecomp() {
   // Matrix inverse
   matrix* Minv3 = mat_inv(M33a);
   mat_print(Minv3);
+  mat_print( mat_mul( Minv3, M33a ) );
+  mat_print( mat_mul( M33a, Minv3 ) );
   mat_clear(Minv3);
   matrix* Minv4 = mat_inv(M44);
   mat_print(Minv4);
   mat_clear(Minv4);
 
   // Left division
-  matrix* x31 = mat_divL( M33a, V3a );
-  mat_print(x31);
-  mat_clear(x31);
-  matrix* x32 = mat_divL( M33a, M32 );
-  mat_print(x32);
-  mat_clear(x32);
-  matrix* x41 = mat_divL( M44, V4 );
-  mat_print(x41);
-  mat_clear(x41);
+  matrix* xL31 = mat_divL( M33a, V3a );
+  mat_print(xL31);
+  mat_clear(xL31);
+  matrix* xL32 = mat_divL( M33a, M32 );
+  mat_print(xL32);
+  mat_clear(xL32);
+  matrix* xL41 = mat_divL( M44, V4 );
+  mat_print(xL41);
+  mat_clear(xL41);
+
+
+  // Right division
+  matrix* xR33 = mat_divR( M33b, M33a );
+  printf("xR33: ");  mat_print(xR33);
+  matrix* test33 = mat_mul( xR33, M33a );
+  printf("test33: ");  mat_print(test33);
+  mat_clear(xR33);  mat_clear(test33);
+  matrix* xR23 = mat_divR( M23, M33a );
+  printf("xR23: ");  mat_print(xR23);
+  matrix* test23 = mat_mul( xR23, M33a );
+  printf("test23: ");  mat_print(test23);
+  mat_clear(xR23);  mat_clear(test23);
+  matrix* xR14 = mat_divR( mat_trans(V4), M44 );
+  printf("xR14: ");  mat_print(xR14);
+  matrix* test14 = mat_mul( xR14, M44 );
+  printf("test14: ");  mat_print(test14);
+  mat_clear(xR14);  mat_clear(test14);
 
   // Clear matrices
   mat_clear(L3); 
