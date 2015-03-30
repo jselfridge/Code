@@ -589,6 +589,29 @@ void mat_LU ( matrix* mat, matrix** L, matrix** U ) {
 }
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_det
+//  Returns the determinant of a square matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double mat_det ( matrix* mat ) {
+
+  int     n = mat->rows;
+  double  product = 1.0;
+  matrix* L = NULL;
+  matrix* U = NULL;
+
+  mat_err( mat->rows != mat->cols, "Error (mat_det): Matrix A must be square.");
+
+  mat_LU( mat, &L, &U );
+  for ( int i=0; i<n; i++ ) {  product *= U->data[i*n+i];  }
+  mat_clear(L);  mat_clear(U);
+
+  return product;
+}
+
+
+
+
 
 
 
@@ -852,35 +875,5 @@ matrix* dotDiagonalMatrix(matrix* a, matrix* b) {
 }
 ~~~*/
 
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  mat_det
-//  Returns the determinant of a square matrix.
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//double mat_det( matrix* mat ) {
-/*  
-  double determinantMatrix(matrix* a) {
-    double product = 0.0;
-    matrix* l = NULL;
-    matrix* u = NULL;
-    int i;
-
-    assert(a->width == a->height, "Matrix A must be square.");
-    LUdecomposition(a, &l, &u);
-
-    // Get the product of upper matrix diagonal
-    // We don't need the lower matrix for this calculation.
-    for (i = 0; i < a->width; i++) {
-      product *= u->data[i * a->width + i];
-    }
-
-    freeMatrix(l);
-    freeMatrix(u);
-    return product;
-  }
-*/
-
-//}
 
 

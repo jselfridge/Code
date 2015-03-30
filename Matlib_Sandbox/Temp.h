@@ -9,6 +9,10 @@
 #define _TEMP_H
 
 
+// Standard includes
+#include <math.h>
+
+
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,8 +83,8 @@ double   mat_trace   ( matrix* mat );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MatDecomp (matrix decompositions)
-void    mat_LU      ( matrix* mat, matrix** L, matrix** U );
-//double   mat_det     ( matrix* mat );             // 
+void     mat_LU      ( matrix* mat, matrix** L, matrix** U );
+double   mat_det     ( matrix* mat );             // 
 //matrix*  mat_inv    ( matrix* mat );
 //matrix*  mat_solve  ( matrix* matA, matrix* vecB );
 
@@ -111,7 +115,7 @@ void    mat_LU      ( matrix* mat, matrix** L, matrix** U );
 //void writeMatrix(matrix* m, char* filename);      // COMPLETE
 //void printMatrix(matrix* m);                      // COMPLETE
 //matrix* eyeMatrix(int n);                         // COMPLETE
-//double traceMatrix(matrix* m);
+//double traceMatrix(matrix* m);                    // COMPLETE
 //matrix* transposeMatrix(matrix* m);               // COMPLETE
 //matrix* meanMatrix(matrix* m);
 //matrix* multiplyMatrix(matrix* a, matrix* b);     // COMPLETE
@@ -125,7 +129,7 @@ void    mat_LU      ( matrix* mat, matrix** L, matrix** U );
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  matrixadv.h
 //void LUdecomp(mat* a, mat** l, mat** u);          // COMPLETE
-//double determinantMatrix(matrix* a);
+//double determinantMatrix(matrix* a);              // COMPLETE
 //matrix* matrixInverse(matrix* a);
 //matrix* solver(matrix* a, matrix* b);
 
