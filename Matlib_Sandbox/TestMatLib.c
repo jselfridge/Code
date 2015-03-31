@@ -1,13 +1,10 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  Main.c - Matlib Library Development
+//  TestMatLib.c
 //  Justin M Selfridge
+//  Script to test the MatLib Library
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "Temp.h"
-
-
-// Standard include files
-#include <stdio.h>
+#include "TestMatLib.h"
 
 
 // Function prototypes
@@ -41,7 +38,7 @@ int main() {
   printf("\nRunning Matlib demo \n");
   InitMat();
   //MatIO();
-  MatManip();
+  //MatManip();
   //MatArith();
   //MatProp();
   //MatDecomp();
