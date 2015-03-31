@@ -6,7 +6,10 @@
 #ifndef _MATDECOMP_H
 #define _MATDECOMP_H
 
-#include <math.h>
+#include "MatIO.h"
+#include "MatManip.h"
+#include "MatArith.h"
+//#include "MatProp.h"
 
 void     mat_LU    ( matrix* mat, matrix** L, matrix** U );
 double   mat_det   ( matrix* mat );

@@ -35,13 +35,13 @@ matrix* M44;
 
 // Main program 
 int main() {
-  printf("\nRunning Matlib demo \n");
+  printf("\nRunning Matlib demo \n\n\n");
   InitMat();
-  //MatIO();
-  //MatManip();
-  //MatArith();
-  //MatProp();
-  //MatDecomp();
+  MatIO();
+  MatManip();
+  MatArith();
+  MatProp();
+  MatDecomp();
   ClearMat();
   printf("Program complete\n\n");
   return 0 ;
@@ -145,7 +145,7 @@ void ClearMat() {
 
 // Matrix Input and Output
 void MatIO() {
-  printf("Testing input and output capabilities \n");
+  printf("Matrix input and output \n");
   matrix* M = mat_init(5,2);
   mat_print(M);
   mat_write(M,"matM");

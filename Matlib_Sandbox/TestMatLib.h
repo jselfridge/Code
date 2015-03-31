@@ -8,7 +8,12 @@
 #define _TESTMATLIB_H
 
 #include <stdio.h>
-#include "Temp.h"
+
+#include "MatIO.h"
+#include "MatManip.h"
+#include "MatArith.h"
+#include "MatProp.h"
+#include "MatDecomp.h"
 
 #endif
 

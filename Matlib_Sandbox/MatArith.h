@@ -6,7 +6,10 @@
 #ifndef _MATARITH_H
 #define _MATARITH_H
 
-#include <math.h>
+#include "MatIO.h"
+#include "MatManip.h"
+//#include "MatProp.h"
+//#include "MatDecomp.h"
 
 matrix*  mat_add    ( matrix* matA, matrix* matB );
 matrix*  mat_sub    ( matrix* matA, matrix* matB );

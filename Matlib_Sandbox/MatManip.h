@@ -6,7 +6,10 @@
 #ifndef _MATMANIP_H
 #define _MATMANIP_H
 
-#include <math.h>
+#include "MatIO.h"
+//#include "MatArith.h"
+//#include "MatProp.h"
+//#include "MatDecomp.h"
 
 void     mat_set    ( matrix* mat, int row, int col, double val );
 double   mat_get    ( matrix* mat, int row, int col );

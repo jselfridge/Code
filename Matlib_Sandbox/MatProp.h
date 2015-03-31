@@ -6,7 +6,10 @@
 #ifndef _MATPROP_H
 #define _MATPROP_H
 
-#include <math.h>
+#include "MatIO.h"
+//#include "MatManip.h"
+//#include "MatArith.h"
+//#include "MatDecomp.h"
 
 double   mat_trace   ( matrix* mat );
 //double   mat_norm1   ( matrix* mat );
