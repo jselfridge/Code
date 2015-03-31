@@ -47,7 +47,7 @@ matrix*  mat_eye    ( int n );
 matrix*  mat_ones   ( int rows, int cols );
 matrix*  mat_scale  ( matrix* mat, double scale );
 void     mat_swapr   ( matrix* mat, int p, int q );
-//matrix* mat_swapc   ( matrix* mat, int n, int m );
+void     mat_swapc   ( matrix* mat, int n, int m );
 
 
 

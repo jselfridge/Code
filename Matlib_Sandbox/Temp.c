@@ -307,7 +307,7 @@ void mat_swapr ( matrix* mat, int p, int q ) {
   double* qRow;
 
   mat_err( r<2, "Error (mat_swapr): Matrix must have at least two rows.");
-  mat_err( p>r && q>r, "Error (mat_swapr): Row index exceeds matrix dimension.");
+  mat_err( p>r || q>r, "Error (mat_swapr): Row index exceeds matrix dimension.");
 
   if ( p == q ) {  return;  }
 
@@ -330,7 +330,6 @@ void mat_swapr ( matrix* mat, int p, int q ) {
 //  mat_swapc
 //  Swaps columns within a matrix.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*
 void mat_swapc ( matrix* mat, int p, int q ) {
 
   int     r = mat->rows;
@@ -340,24 +339,24 @@ void mat_swapc ( matrix* mat, int p, int q ) {
   double* qCol;
 
   mat_err( c<2, "Error (mat_swapc): Matrix must have at least two columns.");
-  mat_err( p>c && q>c, "Error (mat_swapc): Column index exceeds matrix dimension.");
+  mat_err( p>c || q>c, "Error (mat_swapc): Column index exceeds matrix dimension.");
 
   if ( p == q ) {  return;  }
 
-  pRow = mat->data + ((p-1)*c);
-  qRow = mat->data + ((q-1)*c);
+  pCol = mat->data + (p-1);
+  qCol = mat->data + (q-1);
 
-  for ( int i=0; i<c; i++ ) {
-    temp  = *pRow;
-    *pRow = *qRow;
-    *qRow = temp;
-    pRow++;
-    qRow++;
+  for ( int i=0; i<r; i++ ) {
+    temp  = *pCol;
+    *pCol = *qCol;
+    *qCol = temp;
+    pCol += c;
+    qCol += c;
   }
 
   return;
 }
-*/
+
 
 
 

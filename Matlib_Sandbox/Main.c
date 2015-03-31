@@ -215,6 +215,18 @@ void MatManip() {
   mat_swapr(M44,4,2);
   mat_swapr(M44,3,1);
 
+  // Swap cols [2x3]
+  mat_print(M23);
+  mat_swapc(M23,1,3);
+  mat_print(M23);
+  mat_swapc(M23,3,1);
+
+  // Swap col [4x3]
+  mat_print(M43);
+  mat_swapc(M43,3,2);
+  mat_print(M43);
+  mat_swapc(M43,3,2);
+
   // Clear completed matrices 
   mat_clear(M); 
   mat_clear(N); 
