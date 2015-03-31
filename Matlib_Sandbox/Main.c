@@ -41,10 +41,10 @@ int main() {
   printf("\nRunning Matlib demo \n");
   InitMat();
   //MatIO();
-  //MatManip();
+  MatManip();
   //MatArith();
   //MatProp();
-  MatDecomp();
+  //MatDecomp();
   ClearMat();
   printf("Program complete\n\n");
   return 0 ;
@@ -193,6 +193,27 @@ void MatManip() {
   // Ones matrix
   matrix* Q = mat_ones(5,2);
   mat_print(Q);
+
+  // Swap Rows [2x2]
+  mat_print(M22);
+  mat_swapr(M22,1,2);
+  mat_print(M22);
+  mat_swapr(M22,2,1);
+
+  // Swap rows [3x2]
+  mat_print(M32);
+  mat_swapr(M32,2,3);
+  mat_print(M32);
+  mat_swapr(M32,3,2);
+
+  // Swap rows [4x4]
+  mat_print(M44);
+  mat_swapr(M44,1,3);
+  mat_print(M44);
+  mat_swapr(M44,2,4);
+  mat_print(M44);
+  mat_swapr(M44,4,2);
+  mat_swapr(M44,3,1);
 
   // Clear completed matrices 
   mat_clear(M); 

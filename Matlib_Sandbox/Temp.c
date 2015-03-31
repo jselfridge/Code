@@ -42,16 +42,16 @@ void mat_err ( int cond, char* msg ) {
 matrix* mat_init ( int rows, int cols ) {
 
   matrix* out;
-  mat_err( ( rows<1 || cols<1 ), "Error (mat_init): matrix dimensions must be positive" ); 
+  mat_err( ( rows<1 || cols<1 ), "Error (mat_init): Matrix dimensions must be positive." ); 
 
   out = (matrix*) malloc( sizeof(matrix) );
-  mat_err( out == NULL, "Error (mat_init): matrix returned NULL" );
+  mat_err( out == NULL, "Error (mat_init): Matrix returned NULL." );
 
   out->rows = rows;
   out->cols = cols;
   out->data = (double*) malloc( sizeof(double) * rows * cols );
 
-  mat_err( out->data == NULL, "Error (mat_init): matrix data returned NULL" );
+  mat_err( out->data == NULL, "Error (mat_init): Matrix data returned NULL." );
   memset( out->data, 0.0, rows * cols * sizeof(double) );
 
   return out;
@@ -73,15 +73,15 @@ matrix* mat_read ( char* file ) {
   double*  outdata;
 
   if ( ( f= fopen( file, "r" ) ) == NULL ) {
-    fprintf( stderr, "Error (mat_read): cannot open %s \n", file );
+    fprintf( stderr, "Error (mat_read): Cannot open '%s'.\n", file );
     exit(1);
   }
 
   scan = fscanf( f, "%d", &rows );
-  mat_err( scan==EOF, "Error (mat_read): failed to read 'rows' from file" );
+  mat_err( scan==EOF, "Error (mat_read): Failed to read 'rows' from file." );
 
   scan = fscanf( f, "%d", &cols );
-  mat_err( scan==EOF, "Error (mat_read): failed to read 'col' from file" );
+  mat_err( scan==EOF, "Error (mat_read): Failed to read 'col' from file." );
 
   out = mat_init( rows, cols );
   elem = rows * cols; 
@@ -89,12 +89,12 @@ matrix* mat_read ( char* file ) {
 
   for ( i=0; i<elem; i++ ) {
     scan = fscanf( f, "%f", &val );
-    mat_err( scan==EOF, "Error (mat_read): matrix is missing elements" );
+    mat_err( scan==EOF, "Error (mat_read): Matrix is missing elements." );
     *(outdata++) = val;
   }
 
   scan = fscanf( f, "%f", &val );
-  mat_err( scan!=EOF, "Error (mat_read): matrix has extra elements" );
+  mat_err( scan!=EOF, "Error (mat_read): Matrix has extra elements." );
 
   fclose(f);
   return out;
@@ -131,7 +131,7 @@ void mat_write ( matrix* mat, char* file ) {
   double* matdata = mat->data;
 
   if ( ( f= fopen( file, "w" ) ) == NULL ) {
-    fprintf( stderr, "Error (mat_write): cannot open %s\n", file );
+    fprintf( stderr, "Error (mat_write): Cannot open '%s'.\n", file );
     exit(1);
   }
 
@@ -188,7 +188,7 @@ void mat_set ( matrix* mat, int row, int col, double val ) {
   double* matdata;
   int     offset;
 
-  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_set): index exceeds matrix dimensions" );
+  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_set): Index exceeds matrix dimensions." );
 
   matdata = mat->data;
   offset = (row-1) * (mat->cols) + (col-1);
@@ -208,7 +208,7 @@ double mat_get ( matrix* mat, int row, int col ) {
   int     offset;
   double  val;
 
-  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_get): index exceeds matrix dimensions" );
+  mat_err( ( row > mat->rows ) || ( col > mat->cols ), "Error (mat_get): Index exceeds matrix dimensions." );
 
   matdata = mat->data;
   offset = (row-1) * (mat->cols) + (col-1);
@@ -237,7 +237,7 @@ matrix* mat_eye ( int n ) {
   matrix* out;
   double* outdata;
 
-  mat_err( n<1, "Error (mat_eye): identity matrix dimension must be positive." );
+  mat_err( n<1, "Error (mat_eye): Matrix dimension must be positive." );
 
   out = mat_init( n, n );
   outdata = out->data;
@@ -261,7 +261,7 @@ matrix* mat_ones ( int rows, int cols ) {
   double* outdata;
   int elem = rows * cols;
 
-  mat_err(  rows<1 || cols<1, "Error (mat_ones): identity matrix dimension must be positive." );
+  mat_err(  rows<1 || cols<1, "Error (mat_ones): Matrix must have positive dimensions." );
 
   out = mat_init( rows, cols );
   outdata = out->data;
@@ -294,6 +294,70 @@ matrix* mat_scale ( matrix* mat, double scale ) {
 }
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_swapr
+//  Swaps rows within a matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void mat_swapr ( matrix* mat, int p, int q ) {
+
+  int     r = mat->rows;
+  int     c = mat->cols;
+  double  temp;
+  double* pRow;
+  double* qRow;
+
+  mat_err( r<2, "Error (mat_swapr): Matrix must have at least two rows.");
+  mat_err( p>r && q>r, "Error (mat_swapr): Row index exceeds matrix dimension.");
+
+  if ( p == q ) {  return;  }
+
+  pRow = mat->data + ((p-1)*c);
+  qRow = mat->data + ((q-1)*c);
+
+  for ( int i=0; i<c; i++ ) {
+    temp  = *pRow;
+    *pRow = *qRow;
+    *qRow = temp;
+    pRow++;
+    qRow++;
+  }
+
+  return;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  mat_swapc
+//  Swaps columns within a matrix.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+void mat_swapc ( matrix* mat, int p, int q ) {
+
+  int     r = mat->rows;
+  int     c = mat->cols;
+  double  temp;
+  double* pCol;
+  double* qCol;
+
+  mat_err( c<2, "Error (mat_swapc): Matrix must have at least two columns.");
+  mat_err( p>c && q>c, "Error (mat_swapc): Column index exceeds matrix dimension.");
+
+  if ( p == q ) {  return;  }
+
+  pRow = mat->data + ((p-1)*c);
+  qRow = mat->data + ((q-1)*c);
+
+  for ( int i=0; i<c; i++ ) {
+    temp  = *pRow;
+    *pRow = *qRow;
+    *qRow = temp;
+    pRow++;
+    qRow++;
+  }
+
+  return;
+}
+*/
 
 
 
