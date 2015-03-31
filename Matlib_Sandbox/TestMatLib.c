@@ -4,7 +4,7 @@
 //  Justin M Selfridge
 //  Script to test the MatLib Library
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "TestMatLib.h"
+#include "MatLib.h"
 
 
 // Function prototypes

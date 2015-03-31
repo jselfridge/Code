@@ -3,12 +3,7 @@
 //  MatManip.c
 //  Justin M Selfridge
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "MatManip.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
+#include "MatLib.h"
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

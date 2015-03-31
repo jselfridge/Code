@@ -3,12 +3,7 @@
 //  MatIO.c
 //  Justin M Selfridge
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "MatIO.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
+#include "MatLib.h"
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

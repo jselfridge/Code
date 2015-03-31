@@ -3,12 +3,7 @@
 //  MatArith.c
 //  Justin M Selfridge
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "MatArith.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
+#include "MatLib.h"
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
