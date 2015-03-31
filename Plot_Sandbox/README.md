@@ -12,6 +12,6 @@ and a sample .png file will be generated called
 'MultiPlot.png'.  To incorporate this into a C
 program, simply call 
 
-      system("gnuplot 'ScriptName' ")
+      system("gnuplot ScriptName")
 
 from within the C code.

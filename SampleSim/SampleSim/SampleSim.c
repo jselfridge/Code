@@ -1,32 +1,35 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  SampleSim Program
-//  Justin M Selfridge
 //  SampleSim.c
-//  Main source code to run the sample simulation code
+//  Justin M Selfridge
+//  Main source code to run the sample simulation
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "SampleSim.h"
 
 // Main program loop
 int main() {
 
-  printf("\nHello Sample Simulation Demo!\n");
-  /*
-  printf("Demonstrating the RKF solver!\n");
-  DemoRFK();
-  */
-  printf("Demonstrating Linear Systems functions \n");
-  LinSysTest();
+  printf("\n");
+  printf("Hello Sample Simulation Demo!\n");
 
-  printf("\nProgram complete\n\n");
+  matrix* A = mat_init(2,2);
+
+  printf("Program complete\n\n");
 
   return 0 ;
 }
 
+
+
+/*
 float f(float t, float x) {
   return (2 + (x - t - 1) * (x - t - 1));
 }
+*/
 
+
+
+/*
 void DemoRFK() {
   const float a = 1.0, b = 1.5625;
   float x = 2.0, t, h, e;
@@ -41,3 +44,4 @@ void DemoRFK() {
   }
 
 }
+*/
