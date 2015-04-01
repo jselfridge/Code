@@ -13,6 +13,7 @@ int main() {
   printf("Hello Sample Simulation Demo!\n");
 
   matrix* A = mat_init(2,2);
+  mat_print(A);
 
   printf("Program complete\n\n");
 
