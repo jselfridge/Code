@@ -13,7 +13,7 @@
 //#include <iostream>
 #include <stdio.h>
 
-//#include "MatLib.h"
+#include "MatLib.h"
 
 // Function prototypes
 //float f(float t, float x) ;
