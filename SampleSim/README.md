@@ -1,9 +1,11 @@
-SampleSim
-=========
+ODE_Sandbox
+===========
 
-This set of code serves as a sandbox for developing a Matlab-like
-simulation within a C code structure.  Over time it will include 
-a Runge-Kutta-Fehlberg ODE solver, plotting capabilities, vector
-math routines, and optimization routines.
+This set of code serves as a snadbox for developing an Ordinary
+Differential Equation (ODE) routine to numerically solve an 
+Initial Value Problem (IVP).  This capability will be incorporated 
+into "SampleSim" which is the sandbox program for developing 
+Matlab-like capabilities within a C language.
+
 
 

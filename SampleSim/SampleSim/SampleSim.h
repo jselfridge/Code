@@ -7,18 +7,21 @@
 #ifndef _SAMPLESIM_H
 #define _SAMPLESIM_H
 
-// Custom header declarations
 
 // Standard include files
-//#include <iostream>
 #include <stdio.h>
 
-//#include "../../Libraries/MatLib/MatLib.h"
-#include "MatLib.h"
+
+// Custom header declarations
+#include "../ODE/ODE.h"
+
+//  Library headers
+#include "../../../Libraries/MatLib/MatLib.h"
+#include "../../../Libraries/RotLib/RotLib.h"
+
 
 // Function prototypes
-//float f(float t, float x) ;
-//void DemoRFK();
+double f ( double t, double x );
 
 #endif
 
