@@ -13,25 +13,26 @@ int main() {
   printf("Starting Sample Simulation!\n");
 
   // Define time variables
-  float duration = 0.10;
-  float delta = 0.10;
+  float duration = 1.00;
+  float delta = 0.001;
   int steps = (int)(duration/delta);
   printf("Steps: %d, Delta: %f, Dur: %f \n", steps, delta, duration );
 
   // Set up the storage array
-  //matrix* simdata = mat_init(1,steps+1);
+  matrix* simdata = mat_init(1,steps+1);
   double x = 1.0;
   double t = 0.0;
   double e = 0.0;
 
   // Run the simulation
   printf("t = %f, x = %f, e = %f\n" , t, x, e);
-  for ( int i=0; i<steps; i++ ) {
-    ODE( f, &t, &x, delta, &e);
+  for ( int i=1; i<=steps; i++ ) {
+    mat_set(simdata,1,i,x);
+    ODE( derivative, &t, &x, delta, &e);
     printf("t = %f, x = %f, e = %f\n" , t, x, e);
   }
-
-
+  mat_set(simdata,1,steps+1,x);
+  mat_write(simdata,"simdata");
 
   printf("Program complete\n\n");
 
@@ -41,7 +42,7 @@ int main() {
 
 
 
-double f(double t, double x) {
+double derivative (double t, double x) {
   return pow((x-t-1),2)+2;
 }
 

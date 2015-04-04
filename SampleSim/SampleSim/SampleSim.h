@@ -21,7 +21,7 @@
 
 
 // Function prototypes
-double f ( double t, double x );
+double derivative ( double t, double x );
 
 #endif
 
