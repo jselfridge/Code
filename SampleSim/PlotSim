@@ -8,7 +8,7 @@ set output 'PlotSim.png'
 
 # Begin plotting
 set multiplot \
-layout 2,3 \
+layout 4,3 \
 rowsfirst \
 margins 0.07, 0.96, 0.07, 0.96 \
 spacing 0.07
@@ -65,26 +65,47 @@ plot "data/plot" using 1:7 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
-## Subfigure (R3,C1)
-#set ylabel "Vel_{x} [m/s]" \
-#font "/Library/Fonts/Times New Roman.ttf, 12"
-#plot "data/plot" using 1:8 \
-#with lines linewidth 2 linecolor "black"
-#unset ylabel
+# Subfigure (R3,C1)
+set ylabel "Ctrl_{x} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:8 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
 
-## Subfigure (R3,C2)
-#set ylabel "Vel_{y} [m/s]" \
-#font "/Library/Fonts/Times New Roman.ttf, 12"
-#plot "data/plot" using 1:9 \
-#with lines linewidth 2 linecolor "black"
-#unset ylabel
+# Subfigure (R3,C2)
+set ylabel "Ctrl_{y} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:9 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
 
-## Subfigure (R3,C3)
-#set ylabel "Vel_{z} [m/s]" \
-#font "/Library/Fonts/Times New Roman.ttf, 12"
-#plot "data/plot" using 1:10 \
-#with lines linewidth 2 linecolor "black"
-#unset ylabel
+# Subfigure (R3,C3)
+set ylabel "Ctrl_{z} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:10 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R4,C1)
+set ylabel "Dist_{x} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:11 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R4,C2)
+set ylabel "Dist_{y} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:12 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
+
+# Subfigure (R4,C3)
+set ylabel "Dist_{z} [N]" \
+font "/Library/Fonts/Times New Roman.ttf, 12"
+plot "data/plot" using 1:13 \
+with lines linewidth 2 linecolor "black"
+unset ylabel
 
 # Exit plotting
 unset multiplot

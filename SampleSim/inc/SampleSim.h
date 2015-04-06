@@ -25,7 +25,7 @@
 matrix* Deriv ( double t, matrix* x );
 matrix* Ctrl  ( double t );
 //matrix* Ref   ( double t );
-//matrix* Dist  ( double t );
+matrix* Dist  ( double t );
 
 
 // Global prototypes
@@ -34,7 +34,7 @@ matrix*  time;
 matrix*  state;
 matrix*  ctrl;
 //matrix*  ref;
-//matrix*  dist;
+matrix*  dist;
 matrix* plot;
 matrix* simerr;
 

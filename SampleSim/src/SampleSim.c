@@ -47,14 +47,13 @@ int main() {
   mat_set( r,2,1, 0.0 );
   mat_set( r,3,1, 0.0 );
   */
-  /*
+
   // Initialize disturbance signals
-  dist = mat_init(M,STEPS+1);
   matrix* d = mat_init(M,1);
   mat_set( d,1,1, 0.0 );
   mat_set( d,2,1, 0.0 );
   mat_set( d,3,1, 0.0 );
-  */
+  dist = mat_init(M,STEPS+1);
 
   // Assign initial conditions
   mat_set(time,1,1,t);
@@ -71,12 +70,20 @@ int main() {
   }
 
   // Form plotting matrix
-  plot = mat_appc( mat_trans(time), mat_trans(state) );
+  plot = mat_appc( 
+          mat_appc( 
+           mat_appc(
+            mat_trans(time), 
+            mat_trans(state) ), 
+           mat_trans(ctrl) ), 
+          mat_trans(dist) 
+         );
 
   // Store the sim data to file
   mat_write( time,   "data/time"   );
   mat_write( state,  "data/state"  );
-  mat_write( ctrl,   "data/ctrl"  );
+  mat_write( ctrl,   "data/ctrl"   );
+  mat_write( ctrl,   "data/dist"   );
   mat_write( simerr, "data/simerr" );
   mat_write( plot,   "data/plot"   );
 
@@ -94,7 +101,7 @@ int main() {
 matrix* Deriv ( double t, matrix* x ) {
 
   // Initialize derivative matrix
-  matrix* dx = mat_init(N,1);
+  matrix* deriv = mat_init(N,1);
 
   // Collect states
   double px = mat_get(x,1,1);
@@ -111,13 +118,12 @@ matrix* Deriv ( double t, matrix* x ) {
   double ry = mat_get(r,2,1);
   double rz = mat_get(r,3,1);
   */
-  /*
+
   // Determine disturbance signals
   matrix* d = Dist(t);
-  double dx = mat_get(r,1,1);
-  double dy = mat_get(r,2,1);
-  double dz = mat_get(r,3,1);
-  */
+  double dx = mat_get(d,1,1);
+  double dy = mat_get(d,2,1);
+  double dz = mat_get(d,3,1);
 
   // Determine control inputs
   matrix* u = Ctrl(t);
@@ -129,23 +135,25 @@ matrix* Deriv ( double t, matrix* x ) {
   double dpx = vx;
   double dpy = vy;
   double dpz = vz;
-  double dvx = (1/MASS)*(-KX*px -CX*vx +ux);
-  double dvy = (1/MASS)*(-KY*py -CY*vy +uy);
-  double dvz = (1/MASS)*(-KZ*pz -CZ*vz +uz);
+  double dvx = (1/MASS)*(-KX*px -CX*vx +ux +dx);
+  double dvy = (1/MASS)*(-KY*py -CY*vy +uy +dy);
+  double dvz = (1/MASS)*(-KZ*pz -CZ*vz +uz +dz);
 
   // Assign to storage matrices
   mat_set(time,1,step,t);
   for ( int i=1; i<=N; i++ ) {  mat_set( state,  i,step, mat_get(x,i,1) );  }
+  for ( int i=1; i<=M; i++ ) {  mat_set( ctrl,   i,step, mat_get(u,i,1) );  }
+  for ( int i=1; i<=M; i++ ) {  mat_set( dist,   i,step, mat_get(d,i,1) );  }
   
   // Assign values to derivative 
-  mat_set( dx,1,1, dpx );
-  mat_set( dx,2,1, dpy );
-  mat_set( dx,3,1, dpz );
-  mat_set( dx,4,1, dvx );
-  mat_set( dx,5,1, dvy );
-  mat_set( dx,6,1, dvz );
+  mat_set( deriv,1,1, dpx );
+  mat_set( deriv,2,1, dpy );
+  mat_set( deriv,3,1, dpz );
+  mat_set( deriv,4,1, dvx );
+  mat_set( deriv,5,1, dvy );
+  mat_set( deriv,6,1, dvz );
 
-  return dx;
+  return deriv;
 }
 
 
@@ -153,7 +161,7 @@ matrix* Deriv ( double t, matrix* x ) {
 
 matrix* Ctrl ( double t ) {
   matrix* u = mat_init(3,1);
-  if (t<1) {
+  if (t<10) {
     mat_set(u,1,1,0.0);
     mat_set(u,2,1,0.0);
     mat_set(u,3,1,0.0);
@@ -163,9 +171,23 @@ matrix* Ctrl ( double t ) {
     mat_set(u,2,1,2.0);
     mat_set(u,3,1,3.0);
   }
-
-
   return u;
+}
+
+
+matrix* Dist ( double t ) {
+  matrix* d = mat_init(3,1);
+  if (t<1) {
+    mat_set(d,1,1,0.0);
+    mat_set(d,2,1,0.0);
+    mat_set(d,3,1,0.0);
+  }
+  else {
+    mat_set(d,1,1,3.0);
+    mat_set(d,2,1,2.0);
+    mat_set(d,3,1,1.0);
+  }
+  return d;
 }
 
 
@@ -178,14 +200,4 @@ matrix* Ref ( double t ) {
   return r;
 }
 */
-/*
-matrix* Dist ( double t ) {
-  matrix* d = mat_init(3,1);
-  mat_set(d,1,1,0.0);
-  mat_set(d,2,1,0.0);
-  mat_set(d,3,1,0.0);
-  return d;
-}
-*/
-
 
