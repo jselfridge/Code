@@ -8,23 +8,38 @@ EXEC   = RunSampleSim
 CC     = gcc
 CFLAGS = -c -Wall
 
-DIR  := $(shell ls -F | grep "\/" )
-NAME := $(patsubst %/, %, $(DIR) )
-OBJ  := $(foreach o, $(NAME), $(o)/$(o).o )
+#SRCDIR = src
+#INCDIR = inc
+#OBJDIR = obj
+LIBDIR = ../../Libraries/
+MATLIB = $(LIBDIR)MatLib/libMat.a
+ROTLIB = $(LIBDIR)RotLib/libRot.a
 
-LIBPATH = ../../Libraries/
-MATLIB  = $(LIBPATH)MatLib/libMat.a
-ROTLIB  = $(LIBPATH)RotLib/libRot.a
+#SEARCH := $(shell find $(SRCDIR) -name '*.c')
+#NAME := $(patsubst src/%.c, %, $(SEARCH) )
+#OBJ  := $(foreach o, $(NAME), $(o).o )
+
+#SRC := $(shell find $(SRCDIR) -name '*.c')
+#INC := $(patsubst src/%.c, inc/%.h, $(SRC) )
+#OBJ := $(patsubst scr/%.c, obj/%.o, $(SRC) )
 
 all : $(EXEC)
 
-$(EXEC) : $(OBJ)
-	$(CC) $(OBJ) -o $@ $(MATLIB) $(ROTLIB)
+$(EXEC) : obj/SampleSim.o obj/ODE.o
+	$(CC) obj/SampleSim.o obj/ODE.o -o $@ $(MATLIB) $(ROTLIB)
 
-%/%.o : %/%.c %/%.h 
-	$(CC) $(CFLAGS) %/%.c $<
+#$(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCDIR)/%.h 
+#	$(CC) $(CFLAGS) $<
+
+obj/SampleSim.o : src/SampleSim.c inc/SampleSim.h
+	$(CC) $(CFLAGS) $<; mv SampleSim.o ./obj/;
+
+obj/ODE.o : src/ODE.c inc/ODE.h
+	$(CC) $(CFLAGS) $<; mv ODE.o ./obj/;
 
 clean :
-	rm $(OBJ) $(EXEC)
+	rm $(EXEC) ./obj/*
 
+#install :
+#	@echo "$(SRC)"
 

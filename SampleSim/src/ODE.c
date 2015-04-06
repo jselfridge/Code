@@ -3,7 +3,7 @@
 //  ODE.c
 //  Justin M Selfridge
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "ODE.h"
+#include "../inc/ODE.h"
 
 void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, double* e ) {
 
@@ -22,57 +22,57 @@ void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, double*
   K1 = mat_scale( f ( *t, *x ), d);
 
   K2 = mat_scale( f (
-       *t + C20 * d, 
-       mat_add(
-        *x,
-       mat_scale(K1,C21) )
+        *t + C20 * d, 
+        mat_add(
+         *x,
+        mat_scale(K1,C21) )
        ), d);
 
   K3 = mat_scale( f (
-       *t + C30 * d, 
-       mat_add(
+        *t + C30 * d, 
         mat_add(
-	 *x,
-        mat_scale(K1,C31) ),
-       mat_scale(K2,C32) )
+         mat_add(
+          *x,
+         mat_scale(K1,C31) ),
+        mat_scale(K2,C32) )
        ), d);
 
   K4 = mat_scale( f (
-       *t + C40 * d, 
-       mat_add(
-        mat_add(
-         mat_add(
-	  *x,
-         mat_scale(K1,C41) ),
-        mat_scale(K2,C42) ),
-       mat_scale(K3,C43) )
-       ), d);
-
-  K5 = mat_scale( f ( *t, 
-       mat_add(
+        *t + C40 * d, 
         mat_add(
          mat_add(
           mat_add(
-	   *x,
-          mat_scale(K1,C51) ),
-         mat_scale(K2,C52) ),
-        mat_scale(K3,C53) ),
-       mat_scale(K4,C54) )
+           *x,
+          mat_scale(K1,C41) ),
+         mat_scale(K2,C42) ),
+        mat_scale(K3,C43) )
        ), d);
 
-  K6 = mat_scale( f (
-       *t + C60 * d, 
-       mat_add(
+  K5 = mat_scale( f ( *t, 
         mat_add(
          mat_add(
           mat_add(
            mat_add(
-	    *x,
-           mat_scale(K1,C61) ),
-          mat_scale(K2,C62) ),
-         mat_scale(K3,C63) ),
-        mat_scale(K4,C64) ),
-       mat_scale(K5,C65) )
+            *x,
+           mat_scale(K1,C51) ),
+          mat_scale(K2,C52) ),
+         mat_scale(K3,C53) ),
+        mat_scale(K4,C54) )
+       ), d);
+
+  K6 = mat_scale( f (
+        *t + C60 * d, 
+        mat_add(
+         mat_add(
+          mat_add(
+           mat_add(
+            mat_add(
+             *x,
+            mat_scale(K1,C61) ),
+           mat_scale(K2,C62) ),
+          mat_scale(K3,C63) ),
+         mat_scale(K4,C64) ),
+        mat_scale(K5,C65) )
        ), d);
 
   *x = mat_add(

@@ -13,7 +13,7 @@
 
 
 // Custom header declarations
-#include "../ODE/ODE.h"
+#include "../inc/ODE.h"
 
 //  Library headers
 #include "../../../Libraries/MatLib/MatLib.h"

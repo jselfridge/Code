@@ -1,10 +1,9 @@
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  SampleSim.c
 //  Justin M Selfridge
 //  Main source code to run the sample simulation
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "SampleSim.h"
+#include "../inc/SampleSim.h"
 
 // Main program loop
 int main() {
@@ -41,11 +40,11 @@ int main() {
     mat_set(simdata,j,N+1,mat_get(X,j,1));
   }
   mat_set(time,1,N+1,T);
-  mat_write(simdata,"simdata");
-  mat_write(time,"time");
+  mat_write(simdata,"data/simdata");
+  mat_write(time,"data/time");
 
   // Setup the plotting function
-  system("gnuplot ../PlotSim");
+  //system("gnuplot ../PlotSim");
 
 
 
@@ -66,20 +65,3 @@ matrix* derivative ( double t, matrix* x ) {
 
 
 
-
-/*
-void DemoRFK() {
-  const float a = 1.0, b = 1.5625;
-  float x = 2.0, t, h, e;
-  const int n = 72;
-  int i;
-
-  h = (b - a) / (float) n;
-  t = a;
-  for (i = 1; i <= n;  i++) {
-    RKF(f, &t, &x, h, &e);
-    printf("t = %f, x = %f, e = %f\n" , t, x, e);
-  }
-
-}
-*/
