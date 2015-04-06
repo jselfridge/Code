@@ -20,9 +20,9 @@ int main() {
   // Initialize states
   matrix* x = mat_init(N,1);
   mat_set( x,1,1, 0.0 );
-  mat_set( x,2,1,-1.0 );
-  mat_set( x,3,1, 1.0 );
-  mat_set( x,4,1, 1.0 );
+  mat_set( x,2,1, 0.0 );
+  mat_set( x,3,1, 0.0 );
+  mat_set( x,4,1, 0.0 );
   mat_set( x,5,1, 0.0 );
   mat_set( x,6,1, 0.0 );
   state = mat_init(N,STEPS+1);
@@ -32,15 +32,13 @@ int main() {
   for ( int i=1; i<=N; i++ )  {  mat_set( e,i,1, 0.0 );  }
   simerr = mat_init(N,STEPS+1);
 
-
-  /*
   // Initialize controls
   matrix* u = mat_init(M,1);
   mat_set( u,1,1, 0.0 );
   mat_set( u,2,1, 0.0 );
   mat_set( u,3,1, 0.0 );
   ctrl = mat_init(M,STEPS+1);
-  */
+
   /*
   // Initialize reference signals
   reference = mat_init(M,STEPS+1);
@@ -61,7 +59,7 @@ int main() {
   // Assign initial conditions
   mat_set(time,1,1,t);
   for ( int i=1; i<=N; i++ )  {  mat_set( state, i,1, mat_get(x,i,1) );  }
-  //for ( int i=1; i<=M; i++ )  {  mat_set( ctrl,  i,1, mat_get(u,i,1) );  }
+  for ( int i=1; i<=M; i++ )  {  mat_set( ctrl,  i,1, mat_get(u,i,1) );  }
   //for ( int i=1; i<=M; i++ )  {  mat_set( ref,   i,1, mat_get(u,i,1) );  }
   //for ( int i=1; i<=M; i++ )  {  mat_set( dist,  i,1, mat_get(u,i,1) );  }
 
@@ -78,6 +76,7 @@ int main() {
   // Store the sim data to file
   mat_write( time,   "data/time"   );
   mat_write( state,  "data/state"  );
+  mat_write( ctrl,   "data/ctrl"  );
   mat_write( simerr, "data/simerr" );
   mat_write( plot,   "data/plot"   );
 
@@ -119,21 +118,20 @@ matrix* Deriv ( double t, matrix* x ) {
   double dy = mat_get(r,2,1);
   double dz = mat_get(r,3,1);
   */
-  /*
+
   // Determine control inputs
   matrix* u = Ctrl(t);
   double ux = mat_get(u,1,1);
   double uy = mat_get(u,2,1);
   double uz = mat_get(u,3,1);
-  */
 
   // Calculate derivatives
   double dpx = vx;
   double dpy = vy;
   double dpz = vz;
-  double dvx = (1/MASS)*(-KX*px -CX*vx +0);
-  double dvy = (1/MASS)*(-KY*py -CY*vy +0);
-  double dvz = (1/MASS)*(-KZ*pz -CZ*vz +0);
+  double dvx = (1/MASS)*(-KX*px -CX*vx +ux);
+  double dvy = (1/MASS)*(-KY*py -CY*vy +uy);
+  double dvz = (1/MASS)*(-KZ*pz -CZ*vz +uz);
 
   // Assign to storage matrices
   mat_set(time,1,step,t);
@@ -152,15 +150,23 @@ matrix* Deriv ( double t, matrix* x ) {
 
 
 
-/*
+
 matrix* Ctrl ( double t ) {
   matrix* u = mat_init(3,1);
-  mat_set(u,1,1,0.0);
-  mat_set(u,2,1,0.0);
-  mat_set(u,3,1,0.0);
+  if (t<1) {
+    mat_set(u,1,1,0.0);
+    mat_set(u,2,1,0.0);
+    mat_set(u,3,1,0.0);
+  }
+  else {
+    mat_set(u,1,1,1.0);
+    mat_set(u,2,1,2.0);
+    mat_set(u,3,1,3.0);
+  }
+
+
   return u;
 }
-*/
 
 
 /*

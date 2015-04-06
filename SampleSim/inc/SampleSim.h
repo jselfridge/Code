@@ -23,7 +23,7 @@
 
 // Function prototypes
 matrix* Deriv ( double t, matrix* x );
-//matrix* Ctrl  ( double t );
+matrix* Ctrl  ( double t );
 //matrix* Ref   ( double t );
 //matrix* Dist  ( double t );
 
@@ -32,7 +32,7 @@ matrix* Deriv ( double t, matrix* x );
 int      step;
 matrix*  time;
 matrix*  state;
-//matrix*  ctrl;
+matrix*  ctrl;
 //matrix*  ref;
 //matrix*  dist;
 matrix* plot;
@@ -40,7 +40,7 @@ matrix* simerr;
 
 
 // Defines
-#define DUR 10.0
+#define DUR 20.0
 #define DT  0.01
 #define T0  0.0
 #define STEPS (int)(DUR/DT)
@@ -49,9 +49,9 @@ matrix* simerr;
 #define KX 1.0
 #define KY 1.0
 #define KZ 1.0
-#define CX 1.0
+#define CX 2.0
 #define CY 1.0
-#define CZ 1.0
+#define CZ 0.5
 #define MASS  1.0
 
 
