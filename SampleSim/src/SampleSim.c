@@ -1,3 +1,4 @@
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  SampleSim.c
 //  Justin M Selfridge
@@ -15,7 +16,6 @@ int main() {
   float duration = 0.1;
   float D = 0.001;
   int N = (int)(duration/D);
-  //printf("Steps: %d, Delta: %f, Dur: %f \n", steps, delta, duration );
 
   // Set up the storage array
   matrix* simdata = mat_init(2,N+1);
@@ -27,24 +27,32 @@ int main() {
   mat_set( X,2,1, 1.0 );
 
   // Run the simulation
-  //printf("t = %f, x = %f, e = %f\n" , t, x, e);
   for ( int i=1; i<=N; i++ ) {
     for ( int j=1; j<=2; j++ ) {
-      mat_set(simdata,j,i,mat_get(X,j,1));
+      mat_set( simdata,j,i, mat_get(X,j,1) );
     }
     mat_set(time,1,i,T);
     ODE( derivative, &T, &X, D, &E );
     printf("t = %f, x1 = %f, x2 = %f \n", T, mat_get(X,1,1), mat_get(X,2,1) );
   }
   for ( int j=1; j<=2; j++ ) {
-    mat_set(simdata,j,N+1,mat_get(X,j,1));
+    mat_set( simdata,j,N+1, mat_get(X,j,1) );
   }
   mat_set(time,1,N+1,T);
+
+  matrix* plotdata = mat_init(N+1,3);
+  for ( int i=1; i<=N+1; i++ ) {
+    mat_set( plotdata,i,1, mat_get(time,1,i) );
+    for ( int j=1; j<=2; j++ ) {
+      mat_set( plotdata,i,j+1, mat_get(simdata,j,i) );
+    }
+  }
+
   mat_write(simdata,"data/simdata");
   mat_write(time,"data/time");
+  mat_write(plotdata,"data/plotdata");
 
-  // Setup the plotting function
-  //system("gnuplot ../PlotSim");
+  system("gnuplot PlotSim");
 
 
 
@@ -58,7 +66,7 @@ int main() {
 
 matrix* derivative ( double t, matrix* x ) {
   matrix* deriv = mat_init(x->rows,x->cols);
-  double X1 = -2*exp(-2*t);  mat_set(deriv,1,1,X1);
+  double X1 = sin(PI2*t);    mat_set(deriv,1,1,X1);
   double X2 = -3*exp(-3*t);  mat_set(deriv,2,1,X2);
   return deriv;
 }

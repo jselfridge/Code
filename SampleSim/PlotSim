@@ -4,7 +4,7 @@ set terminal \
 png nocrop enhanced \
 size 1400,1000 \
 font "/Library/Fonts/Times New Roman.ttf,10"
-set output 'SimPlot.png'
+set output 'PlotSim.png'
 
 # Begin plotting
 set multiplot \
@@ -26,7 +26,7 @@ set key off
 # Subfigure (R1,C1)
 set ylabel "Att_{x} [rad]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot sin(x) \
+plot "data/plotdata" using 1:2 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
