@@ -5,21 +5,97 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "ODE.h"
 
-void ODE( double f(double,double), double* t, double* x, double d, double* e ) {
+void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, double* e ) {
 
-  double K1, K2, K3, K4, K5, K6, X;
+  mat_err( (*x)->cols!=1, "Error (ODE): State vector (X) must be a column vector." );
 
-  K1 = d* f( *t        , *x );
-  K2 = d* f( *t + C20*d, *x + C21*K1 );
-  K3 = d* f( *t + C30*d, *x + C31*K1 + C32*K2 );
-  K4 = d* f( *t + C40*d, *x + C41*K1 + C42*K2 + C43*K3 );
-  K5 = d* f( *t        , *x + C51*K1 + C52*K2 + C53*K3 + C54*K4 );
-  K6 = d* f( *t + C60*d, *x + C61*K1 + C62*K2 + C63*K3 + C64*K4 + C65*K5 );
+  int n = (*x)->rows;
 
-   X  = *x + A1*K1 + A3*K3 + A4*K4 + A5*K5;
-  *x +=      B1*K1 + B3*K3 + B4*K4 + B5*K5 + B6*K6;
+  matrix* K1 = mat_init(n,1);
+  matrix* K2 = mat_init(n,1);
+  matrix* K3 = mat_init(n,1);
+  matrix* K4 = mat_init(n,1);
+  matrix* K5 = mat_init(n,1);
+  matrix* K6 = mat_init(n,1);
+  matrix* X0 = mat_init(n,1);
+ 
+  K1 = mat_scale( f ( *t, *x ), d);
+
+  K2 = mat_scale( f (
+       *t + C20 * d, 
+       mat_add(
+        *x,
+       mat_scale(K1,C21) )
+       ), d);
+
+  K3 = mat_scale( f (
+       *t + C30 * d, 
+       mat_add(
+        mat_add(
+	 *x,
+        mat_scale(K1,C31) ),
+       mat_scale(K2,C32) )
+       ), d);
+
+  K4 = mat_scale( f (
+       *t + C40 * d, 
+       mat_add(
+        mat_add(
+         mat_add(
+	  *x,
+         mat_scale(K1,C41) ),
+        mat_scale(K2,C42) ),
+       mat_scale(K3,C43) )
+       ), d);
+
+  K5 = mat_scale( f ( *t, 
+       mat_add(
+        mat_add(
+         mat_add(
+          mat_add(
+	   *x,
+          mat_scale(K1,C51) ),
+         mat_scale(K2,C52) ),
+        mat_scale(K3,C53) ),
+       mat_scale(K4,C54) )
+       ), d);
+
+  K6 = mat_scale( f (
+       *t + C60 * d, 
+       mat_add(
+        mat_add(
+         mat_add(
+          mat_add(
+           mat_add(
+	    *x,
+           mat_scale(K1,C61) ),
+          mat_scale(K2,C62) ),
+         mat_scale(K3,C63) ),
+        mat_scale(K4,C64) ),
+       mat_scale(K5,C65) )
+       ), d);
+
+  *x = mat_add(
+        mat_add(
+         mat_add(
+          mat_add(
+           mat_add(
+            *x,
+           mat_scale(K1,B1) ),
+          mat_scale(K3,B3) ),
+         mat_scale(K4,B4) ),
+        mat_scale(K5,B5) ),
+       mat_scale(K6,B6) );
+
+  *e = fabs( *x - X0 );
   *t += d;
-  *e  = fabs( *x - X );
+
+  mat_clear(K1);
+  mat_clear(K2);
+  mat_clear(K3);
+  mat_clear(K4);
+  mat_clear(K5);
+  mat_clear(K6);
 
 }
 

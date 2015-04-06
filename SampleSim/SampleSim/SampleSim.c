@@ -13,26 +13,41 @@ int main() {
   printf("Starting Sample Simulation!\n");
 
   // Define time variables
-  float duration = 1.00;
-  float delta = 0.001;
-  int steps = (int)(duration/delta);
-  printf("Steps: %d, Delta: %f, Dur: %f \n", steps, delta, duration );
+  float duration = 0.1;
+  float D = 0.001;
+  int N = (int)(duration/D);
+  //printf("Steps: %d, Delta: %f, Dur: %f \n", steps, delta, duration );
 
   // Set up the storage array
-  matrix* simdata = mat_init(1,steps+1);
-  double x = 1.0;
-  double t = 0.0;
-  double e = 0.0;
+  matrix* simdata = mat_init(2,N+1);
+  matrix* time    = mat_init(1,N+1);
+  double  T = 0.0;
+  double  E = 0.0;
+  matrix* X = mat_init(2,1);
+  mat_set( X,1,1, 1.0 );
+  mat_set( X,2,1, 1.0 );
 
   // Run the simulation
-  printf("t = %f, x = %f, e = %f\n" , t, x, e);
-  for ( int i=1; i<=steps; i++ ) {
-    mat_set(simdata,1,i,x);
-    ODE( derivative, &t, &x, delta, &e);
-    printf("t = %f, x = %f, e = %f\n" , t, x, e);
+  //printf("t = %f, x = %f, e = %f\n" , t, x, e);
+  for ( int i=1; i<=N; i++ ) {
+    for ( int j=1; j<=2; j++ ) {
+      mat_set(simdata,j,i,mat_get(X,j,1));
+    }
+    mat_set(time,1,i,T);
+    ODE( derivative, &T, &X, D, &E );
+    printf("t = %f, x1 = %f, x2 = %f \n", T, mat_get(X,1,1), mat_get(X,2,1) );
   }
-  mat_set(simdata,1,steps+1,x);
+  for ( int j=1; j<=2; j++ ) {
+    mat_set(simdata,j,N+1,mat_get(X,j,1));
+  }
+  mat_set(time,1,N+1,T);
   mat_write(simdata,"simdata");
+  mat_write(time,"time");
+
+  // Setup the plotting function
+  system("gnuplot ../PlotSim");
+
+
 
   printf("Program complete\n\n");
 
@@ -42,8 +57,11 @@ int main() {
 
 
 
-double derivative (double t, double x) {
-  return pow((x-t-1),2)+2;
+matrix* derivative ( double t, matrix* x ) {
+  matrix* deriv = mat_init(x->rows,x->cols);
+  double X1 = -2*exp(-2*t);  mat_set(deriv,1,1,X1);
+  double X2 = -3*exp(-3*t);  mat_set(deriv,2,1,X2);
+  return deriv;
 }
 
 

@@ -14,6 +14,10 @@
 #include <math.h>
 
 
+// Custom includes
+#include "../../../Libraries/MatLib/MatLib.h"
+
+
 // Equation K2 Constants
 #define  C20        1.0 /     4.0
 #define  C21        1.0 /     4.0
@@ -58,7 +62,7 @@
 
 
 // Function prototypes
-void ODE( double f(double,double), double* t, double* x, double delta, double* err );
+void ODE( matrix* f( double, matrix* ), double* t, matrix** X, double d, double* e );
 
 
 #endif

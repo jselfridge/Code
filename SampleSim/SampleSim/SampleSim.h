@@ -21,7 +21,7 @@
 
 
 // Function prototypes
-double derivative ( double t, double x );
+matrix* derivative ( double t, matrix* x );
 
 #endif
 

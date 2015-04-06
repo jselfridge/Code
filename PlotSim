@@ -4,7 +4,7 @@ set terminal \
 png nocrop enhanced \
 size 1400,1000 \
 font "/Library/Fonts/Times New Roman.ttf,10"
-set output 'MultiPlot.png'
+set output 'TestPlot.png'
 
 # Begin plotting
 set multiplot \
@@ -26,14 +26,14 @@ set key off
 # Subfigure (R1,C1)
 set ylabel "Att_{x} [rad]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot sin(x) \
+plot "testdata" using TIME:STATE1 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R1,C2)
 set ylabel "Att_{y} [rad]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot cos(x) \
+plot "testdata" using 1:3 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
