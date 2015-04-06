@@ -5,9 +5,10 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "../inc/ODE.h"
 
-void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, double* e ) {
+void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, matrix** e ) {
 
-  mat_err( (*x)->cols!=1, "Error (ODE): State vector (X) must be a column vector." );
+  mat_err( (*x)->cols!=1, "Error (ODE): State vector (x) must be a column vector." );
+  mat_err( (*x)->rows!=(*e)->rows, "Error (ODE): State (x) and error (e) vectors must be the same dimension." );
 
   int n = (*x)->rows;
 
@@ -87,7 +88,9 @@ void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, double*
         mat_scale(K5,B5) ),
        mat_scale(K6,B6) );
 
-  *e = fabs( *x - X0 );
+  //*e = fabs( *x - X0 );
+  
+
   *t += d;
 
   mat_clear(K1);

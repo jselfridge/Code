@@ -62,7 +62,7 @@
 
 
 // Function prototypes
-void ODE( matrix* f( double, matrix* ), double* t, matrix** X, double d, double* e );
+void ODE( matrix* f( double, matrix* ), double* t, matrix** X, double d, matrix** e );
 
 
 #endif

@@ -8,7 +8,7 @@ set output 'PlotSim.png'
 
 # Begin plotting
 set multiplot \
-layout 4,3 \
+layout 2,3 \
 rowsfirst \
 margins 0.07, 0.96, 0.07, 0.96 \
 spacing 0.07
@@ -24,88 +24,67 @@ set format y "%-2.1f"
 set key off
 
 # Subfigure (R1,C1)
-set ylabel "Att_{x} [rad]" \
+set ylabel "Pos_{x} [m]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
 plot "data/plot" using 1:2 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R1,C2)
-set ylabel "Att_{y} [rad]" \
+set ylabel "Pos_{y} [m]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
 plot "data/plot" using 1:3 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R1,C3)
-set ylabel "Att_{z} [rad]" \
+set ylabel "Pos_{z} [m]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot sin(2*x) \
+plot "data/plot" using 1:4 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R2,C1)
-set ylabel "Pos_{x} [m]" \
+set ylabel "Vel_{x} [m/s]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot cos(2*x) \
+plot "data/plot" using 1:5 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R2,C2)
-set ylabel "Pos_{y} [m]" \
+set ylabel "Vel_{y} [m/s]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot -sin(x) \
+plot "data/plot" using 1:6 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
 
 # Subfigure (R2,C3)
-set ylabel "Pos_{z} [m]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot -cos(x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R3,C1)
-set ylabel "Ang_{x} [rad/s]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot sin(x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R3,C2)
-set ylabel "Ang_{y} [rad/s]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot cos(x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R3,C3)
-set ylabel "Ang_{z} [rad/s]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot sin(2*x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R4,C1)
-set ylabel "Vel_{x} [m/s]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot cos(2*x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R4,C2)
-set ylabel "Vel_{y} [m/s]" \
-font "/Library/Fonts/Times New Roman.ttf, 12"
-plot -sin(x) \
-with lines linewidth 2 linecolor "black"
-unset ylabel
-
-# Subfigure (R4,C3)
 set ylabel "Vel_{z} [m/s]" \
 font "/Library/Fonts/Times New Roman.ttf, 12"
-plot -cos(x) \
+plot "data/plot" using 1:7 \
 with lines linewidth 2 linecolor "black"
 unset ylabel
+
+## Subfigure (R3,C1)
+#set ylabel "Vel_{x} [m/s]" \
+#font "/Library/Fonts/Times New Roman.ttf, 12"
+#plot "data/plot" using 1:8 \
+#with lines linewidth 2 linecolor "black"
+#unset ylabel
+
+## Subfigure (R3,C2)
+#set ylabel "Vel_{y} [m/s]" \
+#font "/Library/Fonts/Times New Roman.ttf, 12"
+#plot "data/plot" using 1:9 \
+#with lines linewidth 2 linecolor "black"
+#unset ylabel
+
+## Subfigure (R3,C3)
+#set ylabel "Vel_{z} [m/s]" \
+#font "/Library/Fonts/Times New Roman.ttf, 12"
+#plot "data/plot" using 1:10 \
+#with lines linewidth 2 linecolor "black"
+#unset ylabel
 
 # Exit plotting
 unset multiplot
