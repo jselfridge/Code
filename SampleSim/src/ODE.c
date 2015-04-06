@@ -88,8 +88,7 @@ void ODE( matrix* f( double, matrix* ), double* t, matrix** x, double d, matrix*
         mat_scale(K5,B5) ),
        mat_scale(K6,B6) );
 
-  //*e = fabs( *x - X0 );
-  
+  *e = mat_abs(mat_sub(*x,X0));
 
   *t += d;
 

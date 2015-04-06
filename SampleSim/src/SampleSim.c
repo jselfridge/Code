@@ -19,17 +19,17 @@ int main() {
 
   // Initialize states
   matrix* x = mat_init(N,1);
-  mat_set( x,1,1, 1.0 );
-  mat_set( x,2,1, 1.0 );
+  mat_set( x,1,1, 0.0 );
+  mat_set( x,2,1,-1.0 );
   mat_set( x,3,1, 1.0 );
-  mat_set( x,4,1, 0.0 );
+  mat_set( x,4,1, 1.0 );
   mat_set( x,5,1, 0.0 );
   mat_set( x,6,1, 0.0 );
   state = mat_init(N,STEPS+1);
 
   // Initialize simulation error
   matrix* e = mat_init(N,1);
-  for ( int i=1; i<=N, i++ )  {  mat_set( e,i,1, 0.0 );  }
+  for ( int i=1; i<=N; i++ )  {  mat_set( e,i,1, 0.0 );  }
   simerr = mat_init(N,STEPS+1);
 
 
@@ -68,6 +68,7 @@ int main() {
   // Run the simulation
   for ( step=2; step<=STEPS+1; step++ ) {
     ODE( Deriv, &t, &x, DT, &e );
+    for ( int i=1; i<=N; i++ ) {  mat_set( simerr, i,step, mat_get(e,i,1) );  }
     printf("t = %f \n", t );
   }
 
@@ -75,9 +76,10 @@ int main() {
   plot = mat_appc( mat_trans(time), mat_trans(state) );
 
   // Store the sim data to file
-  mat_write( time,  "data/time"  );
-  mat_write( state, "data/state" );
-  mat_write( plot,  "data/plot"  );
+  mat_write( time,   "data/time"   );
+  mat_write( state,  "data/state"  );
+  mat_write( simerr, "data/simerr" );
+  mat_write( plot,   "data/plot"   );
 
   // Plot the simulation
   system("gnuplot PlotSim");
@@ -135,7 +137,7 @@ matrix* Deriv ( double t, matrix* x ) {
 
   // Assign to storage matrices
   mat_set(time,1,step,t);
-  for ( int i=1; i<=N; i++ ) {  mat_set( state, i,step, mat_get(x,i,1) );  }
+  for ( int i=1; i<=N; i++ ) {  mat_set( state,  i,step, mat_get(x,i,1) );  }
   
   // Assign values to derivative 
   mat_set( dx,1,1, dpx );
